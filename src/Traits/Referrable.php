@@ -52,4 +52,24 @@ trait Referrable
     {
         return $this->hasMany(Referral::class, 'referred_user_id');
     }
+
+    /**
+     * Get the affiliate account of the user.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function affiliateAccount()
+    {
+        return $this->belongsTo(Affiliate::class, 'id', 'user_id');
+    }
+
+    /**
+     * Check if the user has a affiliate account.
+     *
+     * @return bool
+     */
+    public function hasAffiliateAccount()
+    {
+        return !is_null($this->affiliateAccount);
+    }
 }
