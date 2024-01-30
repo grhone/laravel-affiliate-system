@@ -44,7 +44,9 @@
     "extra": {
         "laravel": {
             "providers": [
-                "Grhone\\LaravelAffiliateSystem\\Providers\\AffiliateServiceProvider"
+                "Grhone\\LaravelAffiliateSystem\\Providers\\AffiliateServiceProvider",
+                "Grhone\\LaravelAffiliateSystem\\Providers\\TrackingServiceProvider"
+
             ]
         }
     }

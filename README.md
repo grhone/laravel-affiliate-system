@@ -27,7 +27,7 @@ composer require grhone/laravel-affiliate-system
 Publish the package's configuration and migrations to your project:
 
 ```bash
-php artisan vendor:publish --provider="Grhone\LaravelAffiliateSystem\AffiliateServiceProvider"
+php artisan vendor:publish --provider="Grhone\LaravelAffiliateSystem\Providers\AffiliateServiceProvider"
 ```
 
 This command publishes the config file config/affiliate.php, views, and migration files to your project.
@@ -53,7 +53,7 @@ If your Laravel version doesn't support package auto-discovery, add the service 
 ```php
 'providers' => [
     // ...
-    Grhone\LaravelAffiliateSystem\AffiliateServiceProvider::class,
+    Grhone\LaravelAffiliateSystem\Providers\AffiliateServiceProvider::class,
 ];
 ```
 

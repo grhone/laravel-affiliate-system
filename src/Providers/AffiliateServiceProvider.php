@@ -1,6 +1,6 @@
 <?php
 
-namespace Grhone\LaravelAffiliateSystem;
+namespace Grhone\LaravelAffiliateSystem\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use Grhone\LaravelAffiliateSystem\Services\AffiliateService;
