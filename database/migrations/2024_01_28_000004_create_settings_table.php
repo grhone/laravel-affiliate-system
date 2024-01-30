@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateAffiliateSettingsTable extends Migration
+return new class extends Migration
 {
     /**
      * Run the migrations.
@@ -34,6 +34,6 @@ class CreateAffiliateSettingsTable extends Migration
     {
         Schema::dropIfExists('payments');
     }
-}
+};
 
 
