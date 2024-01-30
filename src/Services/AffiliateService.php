@@ -36,7 +36,7 @@ class AffiliateService
     public function calculateEarnings(Affiliate $affiliate)
     {
         $earnings = 0.0;
-        $commissionRate = $affiliate->commission_rate ?? config('affiliate.commissions.default_rate');
+        $commissionRate = $affiliate->commissionRate();
 
         foreach ($affiliate->referrals as $referral) {
             if ($referral->conversion) {

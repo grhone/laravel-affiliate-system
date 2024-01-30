@@ -19,7 +19,6 @@ return [
      */
     'commissions' => [
         'default_rate' => 0.10, // Default commission rate (e.g., 10%)
-        // Add additional commission tiers or types if needed
     ],
 
     /*

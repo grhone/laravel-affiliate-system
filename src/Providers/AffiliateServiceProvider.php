@@ -125,7 +125,7 @@ class AffiliateServiceProvider extends ServiceProvider
     protected function calculateEarningsForReferral(Referral $referral, $transactionAmount)
     {
         $affiliate = $referral->affiliate;
-        $commissionRate = $affiliate->commission_rate ?? config('affiliate.commissions.default_rate');
+        $commissionRate = $affiliate->commissionRate();
 
         // Earnings are calculated as a percentage of the transaction amount
         return $transactionAmount * $commissionRate;

@@ -107,6 +107,11 @@ class Affiliate extends Model
         return $this->hasMany(AffiliateSetting::class);
     }
 
+    public function commissionRate()
+    {
+        return $this->commission_rate ?? config('affiliate.commissions.default_rate');
+    }
+
 
     /**
      * Generate a unique referral code for the affiliate.
