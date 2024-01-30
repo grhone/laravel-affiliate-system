@@ -29,7 +29,7 @@ class AffiliateServiceProvider extends ServiceProvider
 
         $this->publishes([
             __DIR__.'/../../config/affiliate.php' => config_path('affiliate.php'),
-            __DIR__.'/../../resources/views' => resource_path('views'),
+            __DIR__.'/../../resources/views' => resource_path('views/vendor/laravel-affiliate-system'),
             // Additional files to publish...
         ]);
 
