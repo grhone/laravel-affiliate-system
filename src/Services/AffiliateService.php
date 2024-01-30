@@ -19,7 +19,7 @@ class AffiliateService
     public function registerAffiliate(array $data)
     {
 
-        $data['user_id'] = Auth::user()->id();
+        $data['user_id'] = Auth::user()->id;
 
         $affiliate = new Affiliate();
         $affiliate->fill($data);
