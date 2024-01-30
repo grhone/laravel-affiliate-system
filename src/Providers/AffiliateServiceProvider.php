@@ -24,12 +24,12 @@ class AffiliateServiceProvider extends ServiceProvider
     {
         // Load routes, views, migrations, and publish assets
         $this->loadRoutesWithMiddleware();
-        $this->loadViewsFrom(__DIR__.'/resources/views', 'laravel-affiliate-system');
-        $this->loadMigrationsFrom(__DIR__.'/database/migrations');
+        $this->loadViewsFrom(__DIR__.'/../../resources/views', 'laravel-affiliate-system');
+        $this->loadMigrationsFrom(__DIR__.'/../../database/migrations');
 
         $this->publishes([
-            __DIR__.'/config/affiliate.php' => config_path('affiliate.php'),
-            __DIR__.'/resources/views' => resource_path('views/vendor/laravel-affiliate-system'),
+            __DIR__.'/../../config/affiliate.php' => config_path('affiliate.php'),
+            __DIR__.'/../../resources/views' => resource_path('views/vendor/laravel-affiliate-system'),
             // Additional files to publish...
         ]);
 
@@ -67,14 +67,14 @@ class AffiliateServiceProvider extends ServiceProvider
 
         // Merge package configuration file with the application's copy
         $this->mergeConfigFrom(
-            __DIR__.'/config/affiliate.php', 'affiliate'
+            __DIR__.'/../../config/affiliate.php', 'affiliate'
         );
     }
 
     protected function loadRoutesWithMiddleware()
     {
         Route::group(['middleware' => config('affiliate.middleware.regular', ['web'])], function () {
-            $this->loadRoutesFrom(__DIR__.'/routes/web.php');
+            $this->loadRoutesFrom(__DIR__.'/../../routes/web.php');
         });
     }
 
