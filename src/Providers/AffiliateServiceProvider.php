@@ -11,7 +11,7 @@ use Laravel\Cashier\Events\SubscriptionRenewed;
 use Grhone\LaravelAffiliateSystem\Models\Affiliate;
 use Grhone\LaravelAffiliateSystem\Models\Referral;
 use Stripe\StripeClient;
-
+use Illuminate\Support\Facades\Route;
 
 class AffiliateServiceProvider extends ServiceProvider
 {
