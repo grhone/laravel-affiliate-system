@@ -2,53 +2,67 @@
 
 namespace Grhone\LaravelAffiliateSystem\Models;
 
-use Illuminate\Support\Facades\App;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Referral extends Model
 {
+    use SoftDeletes;
+
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
     protected $fillable = [
-        'user_id', 'referral_code', 'referrer_id'
+        'affiliate_id', 'referred_user_id', 'conversion', 'earnings', 'referred_at'
     ];
 
     /**
-     * Get the user associated with the referral.
+     * The attributes that should be mutated to dates.
+     *
+     * @var array
+     */
+    protected $dates = ['referred_at'];
+
+    /**
+     * The attributes that should be cast.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'conversion' => 'boolean',
+        // Other casts as necessary
+    ];
+
+    /**
+     * Affiliate relationship.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function user()
+    public function affiliate()
     {
-        return $this->belongsTo(config('referral.user_model'), 'user_id');
+        return $this->belongsTo('Grhone\LaravelAffiliateSystem\Models\Affiliate', 'affiliate_id');
     }
 
     /**
-     * Get the referrer associated with the referral.
+     * Referred user relationship.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function referrer()
+    public function referredUser()
     {
-        return $this->belongsTo(config('referral.user_model'), 'referrer_id');
+        return $this->belongsTo('App\Models\User', 'referred_user_id');
     }
 
     /**
-     * Retrieve the user by referral code.
+     * Scope a query to only include conversions.
      *
-     * @param  string  $code
-     * @return mixed|null
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @return \Illuminate\Database\Eloquent\Builder
      */
-    public static function userByReferralCode($code)
+    public function scopeConversions($query)
     {
-        $referrer = self::where('referral_code',$code)->first();
-        if ($referrer) {
-            return App::make(config('referral.user_model'))->find($referrer->user_id);
-        }
-        return null;
-        
+        return $query->where('conversion', true);
     }
 }
