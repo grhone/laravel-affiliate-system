@@ -4,7 +4,7 @@
 
     <h1>Create New Affiliate</h1>
 
-    <form method="POST" action="{{ route('affiliates.store') }}">
+    <form method="POST" action="{{ route('affiliates.register.store') }}">
         @csrf
 
         {{-- Add form fields for new affiliate --}}
