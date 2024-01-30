@@ -3,6 +3,7 @@
 namespace Grhone\LaravelAffiliateSystem\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Auth;
 
 class StoreAffiliateRequest extends FormRequest
 {
@@ -13,11 +14,8 @@ class StoreAffiliateRequest extends FormRequest
      */
     public function authorize()
     {
-        // Update this method to determine if the user is authorized to make this request.
-        // You might check if the user is authenticated, has certain roles, etc.
-        // Return true if authorization is not required or implement your logic.
-        
-        return true;
+        // Only allow authenticated users to make this request
+        return Auth::check();
     }
 
     /**
@@ -28,15 +26,22 @@ class StoreAffiliateRequest extends FormRequest
     public function rules()
     {
         return [
-            'user_id' => 'required|exists:users,id|unique:affiliates,user_id',
-            // Add other fields and rules as per your affiliate model
-            // For example:
-            // 'referral_code' => 'required|unique:affiliates,referral_code',
-            // 'approved' => 'sometimes|boolean',
-            // Additional fields and rules...
-
+            // Assuming 'user_id' will be fetched from Auth::user() and not from the request, so it's not included here
+            'first_name' => 'required|string|max:255',
+            'last_name' => 'required|string|max:255',
+            'website' => 'nullable|url',
+            'company_name' => 'nullable|string|max:255',
+            'street_name' => 'required|string|max:255',
+            'city' => 'required|string|max:255',
+            'country' => 'required|string|max:255',
+            'state' => 'required|string|max:255',
+            'zipcode' => 'required|string|max:255',
+            'phone_number' => 'nullable|string|max:255',
+            'vat_number' => 'nullable|string|max:255',
+            'minimum_payout' => 'nullable|numeric|min:0',
             'commission_rate' => 'nullable|numeric|between:0,100',
-
+            'payout_method' => 'required|string|in:paypal', 
+            'paypal_email' => 'nullable|email',
         ];
     }
 
@@ -48,10 +53,7 @@ class StoreAffiliateRequest extends FormRequest
     public function messages()
     {
         return [
-            // Custom validation messages, if needed
-            // For example:
-            // 'user_id.required' => 'A user ID is required for affiliate registration.',
-            // Additional custom messages...
+            // Custom validation messages
         ];
     }
 
@@ -63,10 +65,7 @@ class StoreAffiliateRequest extends FormRequest
     public function attributes()
     {
         return [
-            // Custom attribute names, if needed
-            // For example:
-            // 'user_id' => 'user identifier',
-            // Additional custom attribute names...
+            // Custom attribute names
         ];
     }
 }

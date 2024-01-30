@@ -5,6 +5,7 @@ namespace Grhone\LaravelAffiliateSystem\Services;
 use Grhone\LaravelAffiliateSystem\Models\Affiliate;
 use Grhone\LaravelAffiliateSystem\Models\Referral;
 use Grhone\LaravelAffiliateSystem\Models\Payment; 
+use Auth;
 
 
 class AffiliateService
@@ -17,6 +18,9 @@ class AffiliateService
      */
     public function registerAffiliate(array $data)
     {
+
+        $data['user_id'] = Auth::user()->id();
+
         $affiliate = new Affiliate();
         $affiliate->fill($data);
         $affiliate->save();
