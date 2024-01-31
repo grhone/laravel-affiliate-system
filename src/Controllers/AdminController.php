@@ -21,7 +21,7 @@ class AdminController extends Controller
         // Add more stats as needed
         // TODO: A referral stats.
 
-        return view('laravel-affiliate-system::admin.affiliate.dashboard', compact('totalAffiliates', 'pendingAffiliates'));
+        return view('laravel-affiliate-system::admin.affiliates.dashboard', compact('totalAffiliates', 'pendingAffiliates'));
     }
 
     /**
@@ -32,7 +32,7 @@ class AdminController extends Controller
     public function manageAffiliates()
     {
         $affiliates = Affiliate::all();
-        return view('laravel-affiliate-system::admin.affiliate.manage_affiliates', compact('affiliates'));
+        return view('laravel-affiliate-system::admin.affiliates.manage_affiliates', compact('affiliates'));
     }
 
     /**

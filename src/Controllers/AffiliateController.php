@@ -7,8 +7,10 @@ use Grhone\LaravelAffiliateSystem\Http\Requests\StoreAffiliateRequest;
 use Grhone\LaravelAffiliateSystem\Http\Requests\UpdateAffiliateRequest;
 use Grhone\LaravelAffiliateSystem\Models\Affiliate;
 use Grhone\LaravelAffiliateSystem\Services\AffiliateService;
+use Grhone\LaravelAffiliateSystem\Services\PaymentService;
 use Illuminate\Http\Request;
 use Exception;
+use Auth;
 
 class AffiliateController extends Controller
 {
@@ -21,8 +23,24 @@ class AffiliateController extends Controller
 
     public function dashboard()
     {
-        // Implement the logic to show affiliate dashboard data
-        return view('laravel-affiliate-system::affiliates.dashboard');
+        $affiliateId = Auth::id(); // Assuming the affiliate ID is the same as the user ID
+
+        $affiliate = Affiliate::with(['referrals', 'payments'])
+                            ->where('user_id', $affiliateId)
+                            ->firstOrFail();
+
+        $paymentService = new PaymentService();
+
+        $totalEarnings = $affiliate->earnings;
+        $unpaidEarnings = $paymentService->calculatePayoutForAffiliate($affiliate->id);
+        // Other calculations like total referrals, conversion rate, recent activities...
+
+        return view('laravel-affiliate-system::affiliates.dashboard', [
+            'affiliate'         =>  $affiliate,
+            'totalEarnings'     =>  $totalEarnings,
+            'unpaidEarnings'    =>  $unpaidEarnings,
+            // Pass other necessary data to the view...
+        ]);
     }
 
     public function index()

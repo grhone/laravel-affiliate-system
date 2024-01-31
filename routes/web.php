@@ -29,7 +29,7 @@ Route::prefix('affiliate')->name('affiliate.')->middleware(config('affiliate.mid
 */
 
 Route::prefix('admin')->name('admin.')->middleware(config('affiliate.middleware.affiliate', ['auth']))->group(function () {
-    Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
+    Route::get('/affiliate/dashboard', [AdminController::class, 'dashboard'])->name('affiliate.dashboard');
     Route::get('/manage-affiliates', [AdminController::class, 'manageAffiliates'])->name('manage.affiliates');
     Route::post('/approve-affiliate/{id}', [AdminController::class, 'approveAffiliate'])->name('approve.affiliate');
     Route::post('/deny-affiliate/{id}', [AdminController::class, 'denyAffiliate'])->name('deny.affiliate');
