@@ -30,7 +30,11 @@ Route::prefix('affiliate')->name('affiliate.')->middleware(config('affiliate.mid
 
 Route::prefix('admin')->name('admin.')->middleware(config('affiliate.middleware.affiliate', ['auth']))->group(function () {
     Route::get('/affiliate/dashboard', [AdminController::class, 'dashboard'])->name('affiliate.dashboard');
-    Route::get('/manage-affiliates', [AdminController::class, 'manageAffiliates'])->name('manage.affiliates');
+    Route::get('/manage-affiliates', [AdminController::class, 'manageAffiliates'])->name('manage_affiliates');
+    Route::get('/affiliate/{id}', [AdminController::class, 'show'])->name('affiliate.show');
+    Route::get('/affiliate/{id}/edit', [AdminController::class, 'edit'])->name('affiliate.edit');
+    Route::put('/affiliate/{id}', [AdminController::class, 'update'])->name('affiliate.update');
+    Route::delete('/affiliate/{id}', [AdminController::class, 'destroy'])->name('affiliate.destroy');    
     Route::post('/approve-affiliate/{id}', [AdminController::class, 'approveAffiliate'])->name('approve.affiliate');
     Route::post('/deny-affiliate/{id}', [AdminController::class, 'denyAffiliate'])->name('deny.affiliate');
     // Additional admin-specific routes...

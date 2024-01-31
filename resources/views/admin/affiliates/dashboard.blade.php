@@ -2,7 +2,7 @@
 
 <x-admin-layout>
 
-    <h1>Affiliate Dashboard</h1>
+    <h1>Admin Affiliate Dashboard</h1>
 
     <div class="dashboard-widgets">
         {{-- Ensure you have the necessary data passed from your controller to populate these widgets --}}
@@ -12,12 +12,12 @@
         </div>
 
         <div class="widget">
-            <h3>Total Earnings</h3>
-            <p>${{ $totalEarnings ?? '0.00' }}</p>
+            <h3>Total Unpaid Earnings</h3>
+            <p>${{ $totalUnpaidEarnings ?? '0.00' }}</p>
         </div>
 
         <div class="widget">
-            <h3>Pending Approvals</h3>
+            <h3><a href="{{ route('admin.manage_affiliates') }}">Pending Approvals</a></h3>
             <p>{{ $pendingAffiliates ?? '0' }}</p>
         </div>
 

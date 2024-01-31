@@ -16,7 +16,7 @@
         </div>
     @endif
 
-    <table class="table">
+    <table class="w-full">
         <thead>
             <tr>
                 <th>ID</th>
@@ -36,8 +36,8 @@
                     <td>{{ $affiliate->commission_rate ?? 'Default' }}</td>
                     <td>{{ $affiliate->approved ? 'Approved' : 'Pending' }}</td>
                     <td>
-                        <a href="{{ route('admin.affiliates.show', $affiliate->id) }}" class="btn btn-info">View</a>
-                        <a href="{{ route('admin.affiliates.edit', $affiliate->id) }}" class="btn btn-primary">Edit</a>
+                        <a href="{{ route('admin.affiliate.show', $affiliate->id) }}" class="btn btn-info">View</a>
+                        <a href="{{ route('admin.affiliate.edit', $affiliate->id) }}" class="btn btn-primary">Edit</a>
                         @if(!$affiliate->approved)
                             <form action="{{ route('admin.approve.affiliate', $affiliate->id) }}" method="POST" style="display:inline-block;">
                                 @csrf
@@ -48,7 +48,7 @@
                                 <button type="submit" class="btn btn-danger">Deny</button>
                             </form>
                         @endif
-                        <form action="{{ route('admin.affiliates.destroy', $affiliate->id) }}" method="POST" style="display:inline-block;">
+                        <form action="{{ route('admin.affiliate.destroy', $affiliate->id) }}" method="POST" style="display:inline-block;">
                             @csrf
                             @method('DELETE')
                             <button type="submit" class="btn btn-warning">Delete</button>

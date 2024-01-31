@@ -92,4 +92,71 @@ class AdminController extends Controller
         return redirect()->route('admin.manage_affiliates')
                          ->with('success', 'Affiliate application denied.');
     }
+
+    /**
+     * Display the specified affiliate.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function show($id)
+    {
+        $affiliate = Affiliate::findOrFail($id);
+        return view('laravel-affiliate-system::admin.affiliates.show', compact('affiliate'));
+    }
+
+
+    /**
+     * Show the form for editing the specified affiliate.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function edit($id)
+    {
+        $affiliate = Affiliate::findOrFail($id);
+        return view('laravel-affiliate-system::admin.affiliates.edit', compact('affiliate'));
+    }
+
+
+    /**
+     * Update the specified affiliate in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request, $id)
+    {
+        $affiliate = Affiliate::findOrFail($id);
+        // Validate and update logic here
+        $affiliate->update($request->all());
+
+        return redirect()->route('admin.manage_affiliates')
+                        ->with('success', 'Affiliate updated successfully.');
+    }
+
+    /**
+     * Remove the specified affiliate from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy($id)
+    {
+        try {
+            $affiliate = Affiliate::findOrFail($id);
+            $affiliate->delete();
+
+            return redirect()->route('admin.manage_affiliates')
+                            ->with('success', 'Affiliate deleted successfully.');
+        } catch (\Exception $e) {
+            // Log the error and redirect with an error message
+            return redirect()->route('admin.manage_affiliates')
+                            ->withErrors('Failed to delete the affiliate.');
+        }
+    }
+
+
+
 }
