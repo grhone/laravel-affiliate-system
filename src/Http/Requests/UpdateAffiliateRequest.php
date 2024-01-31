@@ -13,10 +13,8 @@ class UpdateAffiliateRequest extends FormRequest
      */
     public function authorize()
     {
-        // Implement authorization logic.
-        // For example, you might check if the user is authenticated or has a specific role.
-        // Return true if authorization is not required for this request.
-        return true;
+        // Only allow authenticated users to make this request
+        return Auth::check();
     }
 
     /**
@@ -27,14 +25,22 @@ class UpdateAffiliateRequest extends FormRequest
     public function rules()
     {
         return [
-            // Define validation rules for updating an affiliate
-            // For example:
-            'referral_code' => 'required|string|unique:affiliates,referral_code,' . $this->affiliate->id,
-            'approved' => 'sometimes|boolean',
-            // Add other validation rules as needed
-
+            // Assuming 'user_id' will be fetched from Auth::user() and not from the request, so it's not included here
+            'first_name' => 'required|string|max:255',
+            'last_name' => 'required|string|max:255',
+            'website' => 'nullable|url',
+            'company_name' => 'nullable|string|max:255',
+            'street_name' => 'required|string|max:255',
+            'city' => 'required|string|max:255',
+            'country' => 'required|string|max:255',
+            'state' => 'required|string|max:255',
+            'zipcode' => 'required|string|max:255',
+            'phone_number' => 'nullable|string|max:255',
+            'vat_number' => 'nullable|string|max:255',
+            'minimum_payout' => 'nullable|numeric|min:0',
             'commission_rate' => 'nullable|numeric|between:0,100',
-
+            'payout_method' => 'required|string|in:paypal', 
+            'paypal_email' => 'nullable|email',
         ];
     }
 

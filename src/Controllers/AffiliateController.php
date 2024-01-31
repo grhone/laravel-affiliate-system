@@ -98,22 +98,14 @@ class AffiliateController extends Controller
 
     public function settings()
     {
-        $affiliateId = Auth::id(); // Assuming the affiliate ID is the same as the user ID
-
-        $affiliate = Affiliate::with(['referrals', 'payments'])
-                            ->where('user_id', $affiliateId)
-                            ->firstOrFail();
+        $affiliate = Affiliate::findOrFail(Auth::user()->id);
 
         return view('affiliates.settings', compact('affiliate'));
     }
 
     public function updateSettings(Request $request)
     {
-        $affiliateId = Auth::id(); // Assuming the affiliate ID is the same as the user ID
-
-        $affiliate = Affiliate::with(['referrals', 'payments'])
-                            ->where('user_id', $affiliateId)
-                            ->firstOrFail();
+        $affiliate = Affiliate::findOrFail($request->user()->id);
 
         // Assuming the request contains keys like 'notification_new_sales', 'notification_daily_report', etc.
         $settings = $request->only([
