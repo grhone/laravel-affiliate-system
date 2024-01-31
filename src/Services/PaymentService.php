@@ -12,7 +12,7 @@ class PaymentService
 {
     protected $paypalService;
 
-    public function __construct(PayPalService $paypalService)
+    public function __construct(PayPalService $paypalService = null)
     {
         $this->paypalService = $paypalService;
     }
