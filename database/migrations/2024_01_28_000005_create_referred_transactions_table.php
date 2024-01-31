@@ -14,6 +14,7 @@ return new class extends Migration
             $table->decimal('purchase_amount', 10, 2);
             $table->decimal('earnings', 10, 2);
             $table->timestamps();
+            $table->softDeletes();
 
             $table->foreign('referral_id')->references('id')->on('referrals')->onDelete('cascade');
         });

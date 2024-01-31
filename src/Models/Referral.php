@@ -4,6 +4,7 @@ namespace Grhone\LaravelAffiliateSystem\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Grhone\LaravelAffiliateSystem\Models\ReferredTransaction; 
 
 class Referral extends Model
 {
@@ -64,5 +65,15 @@ class Referral extends Model
     public function scopeConversions($query)
     {
         return $query->where('conversion', true);
+    }
+
+    /**
+     * Referred transactions relationship.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function referredTransactions()
+    {
+        return $this->hasMany(ReferredTransaction::class, 'referral_id');
     }
 }
