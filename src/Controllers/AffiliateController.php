@@ -32,7 +32,7 @@ class AffiliateController extends Controller
         $paymentService = new PaymentService();
 
         $totalEarnings = $affiliate->earnings;
-        $unpaidEarnings = $paymentService->calculatePayoutForAffiliate($affiliate->id);
+        $unpaidEarnings = $paymentService->calculatePayoutForAffiliate($affiliate);
         // Other calculations like total referrals, conversion rate, recent activities...
 
         return view('laravel-affiliate-system::affiliates.dashboard', [
