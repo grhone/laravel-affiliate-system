@@ -5,9 +5,18 @@ namespace Grhone\LaravelAffiliateSystem\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Grhone\LaravelAffiliateSystem\Models\Affiliate;
+use Grhone\LaravelAffiliateSystem\Services\PaymentService;
 
 class AdminController extends Controller
 {
+
+    protected $paymentService;
+
+    public function __construct(PaymentService $paymentService)
+    {
+        $this->paymentService = $paymentService;
+    }
+
     /**
      * Display the admin dashboard with overall program stats.
      *
@@ -21,7 +30,17 @@ class AdminController extends Controller
         // Add more stats as needed
         // TODO: A referral stats.
 
-        return view('laravel-affiliate-system::admin.affiliates.dashboard', compact('totalAffiliates', 'pendingAffiliates'));
+        // Calculate total unpaid earnings
+        $totalUnpaidEarnings = 0.0;
+        $approvedAffiliates = Affiliate::where('approved', true)->get();
+        $totalApprovedAffiliates = $approvedAffiliates->count();
+
+        foreach ($approvedAffiliates as $affiliate) {
+            $unpaidEarnings = $this->paymentService->calculatePayoutForAffiliate($affiliate);
+            $totalUnpaidEarnings += $unpaidEarnings;
+        }
+
+        return view('laravel-affiliate-system::admin.affiliates.dashboard', compact('totalAffiliates', 'totalApprovedAffiliates', 'pendingAffiliates', 'totalUnpaidEarnings'));
     }
 
     /**

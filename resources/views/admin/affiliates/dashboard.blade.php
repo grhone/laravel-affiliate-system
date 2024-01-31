@@ -7,8 +7,8 @@
     <div class="dashboard-widgets">
         {{-- Ensure you have the necessary data passed from your controller to populate these widgets --}}
         <div class="widget">
-            <h3>Total Affiliates</h3>
-            <p>{{ $totalAffiliates ?? 'N/A' }}</p>
+            <h3>Total Approved Affiliates</h3>
+            <p>{{ $totalApprovedAffiliates ?? 'N/A' }}</p>
         </div>
 
         <div class="widget">
