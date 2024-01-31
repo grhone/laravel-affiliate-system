@@ -22,7 +22,7 @@
         <p>PayPal Email: {{ $affiliate->paypal_email ?? 'N/A' }}</p>
         @if($affiliate->approved)
         <p>Commission Rate:{{ $affiliate->commissionRate() }}% </p>
-        <p>Earnings: ${{ number_format($affiliate->earnings, 2) }}</p>
+        <p>Unpaid Earnings: ${{ number_format($affiliate->unpaidEarnings(), 2) }}</p>
         <p>Referral Code: {{ $affiliate->referral_code }}</p>
         @endif
     </div>

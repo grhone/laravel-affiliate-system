@@ -7,7 +7,6 @@ use Grhone\LaravelAffiliateSystem\Http\Requests\StoreAffiliateRequest;
 use Grhone\LaravelAffiliateSystem\Http\Requests\UpdateAffiliateRequest;
 use Grhone\LaravelAffiliateSystem\Models\Affiliate;
 use Grhone\LaravelAffiliateSystem\Services\AffiliateService;
-use Grhone\LaravelAffiliateSystem\Services\PaymentService;
 use Illuminate\Http\Request;
 use Exception;
 use Auth;
@@ -29,10 +28,8 @@ class AffiliateController extends Controller
                             ->where('user_id', $affiliateId)
                             ->firstOrFail();
 
-        $paymentService = new PaymentService();
-
         $totalEarnings = $affiliate->earnings;
-        $unpaidEarnings = $paymentService->calculatePayoutForAffiliate($affiliate);
+        $unpaidEarnings = $affilate->unpaidEarnings();
         // Other calculations like total referrals, conversion rate, recent activities...
 
         return view('laravel-affiliate-system::affiliates.dashboard', [

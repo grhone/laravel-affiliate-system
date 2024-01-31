@@ -113,6 +113,37 @@ class Affiliate extends Model
         return $this->commission_rate ?? config('affiliate.commissions.default_rate');
     }
 
+    /**
+     * Calculate the unpaid earnings for the affiliate.
+     *
+     * @return float
+     */
+    public function unpaidEarnings()
+    {
+        // Get the last payment made to the affiliate
+        $lastPayment = $this->payments()->latest('paid_at')->first();
+        $lastPaymentDate = $lastPayment ? $lastPayment->paid_at : null;
+
+        $totalUnpaidEarnings = 0.0;
+
+        // Query builder for referred transactions
+        $transactionsQuery = $this->referredTransactions();
+
+        // If there is a last payment date, consider transactions after that date
+        if ($lastPaymentDate) {
+            $transactionsQuery->where('created_at', '>', $lastPaymentDate);
+        }
+
+        $newTransactions = $transactionsQuery->get();
+
+        foreach ($newTransactions as $transaction) {
+            $totalUnpaidEarnings += $transaction->earnings;
+        }
+
+        return $totalUnpaidEarnings;
+    }
+
+
 
     /**
      * Generate a unique referral code for the affiliate.

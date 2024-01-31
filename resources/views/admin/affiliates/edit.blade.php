@@ -4,7 +4,7 @@
 
     <h1>Edit Affiliate</h1>
 
-    <form method="POST" action="{{ route('affiliates.update', $affiliate->id) }}">
+    <form method="POST" action="{{ route('admin.affiliate.update', $affiliate->id) }}">
         @csrf
         @method('PUT')
 
