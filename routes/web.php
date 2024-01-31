@@ -16,10 +16,10 @@ Route::prefix('affiliate')->name('affiliate.')->middleware(config('affiliate.mid
     Route::get('/register', [AffiliateController::class, 'create'])->name('register');
     Route::post('/register', [AffiliateController::class, 'store'])->name('register.store');
     Route::get('/edit-profile', [AffiliateController::class, 'edit'])->name('edit');
-    Route::post('/edit-profile', [AffiliateController::class, 'update'])->name('update');
+    Route::put('/edit-profile', [AffiliateController::class, 'update'])->name('update');
     Route::get('/reports', [AffiliateController::class, 'reports'])->name('reports');
     Route::get('/settings', [AffiliateController::class, 'settings'])->name('settings');
-    Route::post('/settings', [AffiliateController::class, 'updateSettings'])->name('updateSettings');
+    Route::put('/settings', [AffiliateController::class, 'updateSettings'])->name('updateSettings');
     });
 
 /*
