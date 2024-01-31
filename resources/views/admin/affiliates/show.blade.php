@@ -21,10 +21,30 @@
         <p>Payout Method: {{ ucfirst($affiliate->payout_method) }}</p>
         <p>PayPal Email: {{ $affiliate->paypal_email ?? 'N/A' }}</p>
         @if($affiliate->approved)
-        <p>Commission Rate:{{ $affiliate->commissionRate() }}% </p>
+        <p>Referred Users: {{ $affiliate->referrals()->count() }}</p>
+        <p>Referred Transactions: {{ $affiliate->referredTransactions()->count() }}</p>
+        <p>Commission Rate: {{ $affiliate->commissionRate() }}% </p>
         <p>Unpaid Earnings: ${{ number_format($affiliate->unpaidEarnings(), 2) }}</p>
         <p>Referral Code: {{ $affiliate->referral_code }}</p>
         @endif
     </div>
+
+    @if($affiliate->referrals()->count() > 0)
+    <h2>Referred Users</h2>
+    <ul>
+        @foreach($affiliate->referrals() as $referral)
+        <li>{{ $referredTransaction->created_at }}</li>
+        @endforeach
+    </ul>
+    @endif
+
+    @if($affiliate->referredTransactions()->count() > 0)
+    <h2>Referred Transactions</h2>
+    <ul>
+        @foreach($affiliate->referredTransactions() as $referredTransaction)
+        <li>{{ $referredTransaction->created_at }}</li>
+        @endforeach
+    </ul>
+    @endif
 
 </x-admin-layout>

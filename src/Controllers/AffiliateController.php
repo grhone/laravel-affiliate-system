@@ -29,7 +29,7 @@ class AffiliateController extends Controller
                             ->firstOrFail();
 
         $totalEarnings = $affiliate->earnings;
-        $unpaidEarnings = $affilate->unpaidEarnings();
+        $unpaidEarnings = $affiliate->unpaidEarnings();
         // Other calculations like total referrals, conversion rate, recent activities...
 
         return view('laravel-affiliate-system::affiliates.dashboard', [
@@ -96,15 +96,24 @@ class AffiliateController extends Controller
         }
     }
 
-    public function settings($id)
+    public function settings()
     {
-        $affiliate = Affiliate::findOrFail($id);
+        $affiliateId = Auth::id(); // Assuming the affiliate ID is the same as the user ID
+
+        $affiliate = Affiliate::with(['referrals', 'payments'])
+                            ->where('user_id', $affiliateId)
+                            ->firstOrFail();
+
         return view('affiliates.settings', compact('affiliate'));
     }
 
-    public function updateSettings(Request $request, $id)
+    public function updateSettings(Request $request)
     {
-        $affiliate = Affiliate::findOrFail($id);
+        $affiliateId = Auth::id(); // Assuming the affiliate ID is the same as the user ID
+
+        $affiliate = Affiliate::with(['referrals', 'payments'])
+                            ->where('user_id', $affiliateId)
+                            ->firstOrFail();
 
         // Assuming the request contains keys like 'notification_new_sales', 'notification_daily_report', etc.
         $settings = $request->only([

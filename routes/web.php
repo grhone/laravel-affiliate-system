@@ -18,8 +18,8 @@ Route::prefix('affiliate')->name('affiliate.')->middleware(config('affiliate.mid
     Route::get('/edit-profile', [AffiliateController::class, 'edit'])->name('edit');
     Route::post('/edit-profile', [AffiliateController::class, 'update'])->name('update');
     Route::get('/reports', [AffiliateController::class, 'reports'])->name('reports');
-    Route::get('/settings/{id}', [AffiliateController::class, 'settings'])->name('settings');
-    Route::post('/settings/{id}', [AffiliateController::class, 'updateSettings'])->name('updateSettings');
+    Route::get('/settings', [AffiliateController::class, 'settings'])->name('settings');
+    Route::post('/settings', [AffiliateController::class, 'updateSettings'])->name('updateSettings');
     });
 
 /*
