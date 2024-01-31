@@ -74,10 +74,15 @@ class PaymentService
 
         $totalEarnings = 0.0;
 
-        // Sum up earnings from new referred transactions since the last payment
-        $newTransactions = $affiliate->referredTransactions()
-                                    ->where('created_at', '>', $lastPaymentDate)
-                                    ->get();
+        // Query builder for referred transactions
+        $transactionsQuery = $affiliate->referredTransactions();
+
+        // If there is a last payment date, consider transactions after that date
+        if ($lastPaymentDate) {
+            $transactionsQuery->where('created_at', '>', $lastPaymentDate);
+        }
+
+        $newTransactions = $transactionsQuery->get();
 
         foreach ($newTransactions as $transaction) {
             $totalEarnings += $transaction->earnings;
