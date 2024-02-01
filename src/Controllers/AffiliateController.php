@@ -81,7 +81,7 @@ class AffiliateController extends Controller
         // Commission/Earnings
         $commissionEarningsToday = $affiliate->referredTransactions()->whereDate('referred_transactions.created_at', now()->toDateString())
                                                                     ->sum('earnings');
-        $commissionEarningsThisMonth = $affiliate->referredTransactions()->whereMonth('referred_transactionscreated_at', now()->month)
+        $commissionEarningsThisMonth = $affiliate->referredTransactions()->whereMonth('referred_transactions.created_at', now()->month)
                                                                         ->whereYear('referred_transactions.created_at', now()->year)
                                                                         ->sum('earnings');
 
