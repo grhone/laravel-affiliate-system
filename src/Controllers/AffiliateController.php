@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Grhone\LaravelAffiliateSystem\Http\Requests\StoreAffiliateRequest;
 use Grhone\LaravelAffiliateSystem\Http\Requests\UpdateAffiliateRequest;
 use Grhone\LaravelAffiliateSystem\Models\Affiliate;
+use Grhone\LaravelAffiliateSystem\Models\AffiliateSetting;
 use Grhone\LaravelAffiliateSystem\Services\AffiliateService;
 use Illuminate\Http\Request;
 use Exception;
@@ -100,25 +101,29 @@ class AffiliateController extends Controller
     {
         $affiliate = Affiliate::findOrFail(Auth::user()->id);
 
-        return view('affiliates.settings', compact('affiliate'));
+        return view('laravel-affiliate-system::affiliates.settings', compact('affiliate'));
     }
 
     public function updateSettings(Request $request)
     {
         $affiliate = Affiliate::findOrFail($request->user()->id);
 
-        // Assuming the request contains keys like 'notification_new_sales', 'notification_daily_report', etc.
-        $settings = $request->only([
-            'notification_new_sales',
-            'notification_daily_report',
-            'notification_weekly_report',
-            'notification_monthly_report'
-        ]);
+        // Define all the settings you're expecting
+        $allSettings = [
+            'notification_new_sales' => 0,
+            'notification_daily_report' => 0,
+            'notification_weekly_report' => 0,
+            'notification_monthly_report' => 0,
+        ];
 
-        foreach ($settings as $key => $value) {
+        // Override the default value if the setting is present in the request
+        $requestSettings = $request->only(array_keys($allSettings));
+        $settingsToUpdate = array_merge($allSettings, $requestSettings);
+
+        foreach ($settingsToUpdate as $key => $value) {
             // Update or create each setting
             AffiliateSetting::updateOrCreate(
-                ['affiliate_id' => $id, 'key' => $key],
+                ['affiliate_id' => $affiliate->id, 'key' => $key],
                 ['value' => $value]
             );
         }
