@@ -14,6 +14,7 @@ class ReferredTransaction extends Model
     protected $fillable = [
         'referral_id',
         'purchase_amount',
+        'type',
         'earnings',
     ];
 

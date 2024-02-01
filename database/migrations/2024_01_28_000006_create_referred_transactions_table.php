@@ -11,6 +11,7 @@ return new class extends Migration
         Schema::create('referred_transactions', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('referral_id');
+            $table->string('type');
             $table->decimal('purchase_amount', 10, 2);
             $table->decimal('earnings', 10, 2);
             $table->timestamps();

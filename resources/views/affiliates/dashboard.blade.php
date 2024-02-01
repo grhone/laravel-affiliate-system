@@ -36,32 +36,21 @@
     </div>
 
     @if($affiliate->approved)
-        <h2 class="text-xl font-bold">Clicks</h2>
-        @if($affiliate->clicks()->count() > 0)
-        <ul>
-            @foreach($affiliate->clicks() as $click)
-            <li>{{ $click->created_at }}</li>
-            @endforeach
-        </ul>
-        @endif
-    @endif
+    <div>
+        <h2 class="text-xl font-bold">Overview</h2>
+        <table class="table-auto w-full">
+            <tr><th><th><th>Today</th><th>This Month</th></tr>
+            <tr><td>Raw Clicks</td><td>{{ $rawClicksToday }}</td><td>{{ $rawClicksThisMonth }}</td></tr>
+            <tr><td>Unique Clicks</td><td>{{ $uniqueClicksToday }}</td><td>{{ $uniqueClicksThisMonth }}</td></tr>
+            <tr><td>Signups</td><td>{{ $signupsToday }}</td><td>{{ $signupsThisMonth }}</td></tr>
+            <tr><td>Sales/Transactions</td><td>{{ $salesToday }}</td><td>{{ $salesThisMonth }}</td></tr>
+            <tr><td>Transaction Value</td><td>{{ $transactionValueToday }}</td><td>{{ $transactionValueThisMonth }}</td></tr>
+            <tr><td>Refunds</td><td>{{ $refundsToday }}</td><td>{{ $refundsThisMonth }}</td></tr>
+            <tr><td>Chargebacks</td><td>{{ $chargebacksToday }}</td><td>{{ $chargebacksThisMonth }}</td></tr>
+            <tr><td>Commission/Earnings</td><td>{{ $commissionEarningsToday }}</td><td>{{ $commissionEarningsThisMonth  }}</td></tr>
+        </table>
+    </div>
 
-    @if($affiliate->referrals()->count() > 0)
-    <h2 class="text-xl font-bold">Referred Users</h2>
-    <ul>
-        @foreach($affiliate->referrals() as $referral)
-        <li>{{ $referredTransaction->created_at }}</li>
-        @endforeach
-    </ul>
-    @endif
-
-    @if($affiliate->referredTransactions()->count() > 0)
-    <h2 class="text-xl font-bold">Referred Transactions</h2>
-    <ul>
-        @foreach($affiliate->referredTransactions() as $referredTransaction)
-        <li>{{ $referredTransaction->created_at }}</li>
-        @endforeach
-    </ul>
     @endif
 
     <script>

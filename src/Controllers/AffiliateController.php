@@ -25,19 +25,86 @@ class AffiliateController extends Controller
     {
         $affiliateId = Auth::id(); // Assuming the affiliate ID is the same as the user ID
 
-        $affiliate = Affiliate::with(['referrals', 'payments'])
+        $affiliate = Affiliate::with(['clicks', 'referredTransactions', 'referrals', 'payments'])
                             ->where('user_id', $affiliateId)
                             ->firstOrFail();
 
         $totalEarnings = $affiliate->earnings;
         $unpaidEarnings = $affiliate->unpaidEarnings();
-        // Other calculations like total referrals, conversion rate, recent activities...
+
+        // Calculate Raw Clicks
+        $rawClicksToday = $affiliate->clicks()->whereDate('created_at', now()->toDateString())->count();
+        $rawClicksThisMonth = $affiliate->clicks()->whereMonth('created_at', now()->month)
+                                                ->whereYear('created_at', now()->year)->count();
+
+        // Assuming you have a way to distinguish unique clicks, for example by IP or session ID
+        // This is a placeholder for the logic you might use
+        $uniqueClicksToday = $affiliate->clicks()->whereDate('created_at', now()->toDateString())->distinct('ip')->count();
+        $uniqueClicksThisMonth = $affiliate->clicks()->whereMonth('created_at', now()->month)
+                                                    ->whereYear('created_at', now()->year)->distinct('ip')->count();
+
+        // Signups - Assuming a referral that resulted in a user creation
+        $signupsToday = $affiliate->referrals()->whereDate('created_at', now()->toDateString())->count();
+        $signupsThisMonth = $affiliate->referrals()->whereMonth('created_at', now()->month)
+                                                ->whereYear('created_at', now()->year)->count();
+
+        // Sales/Transactions - Assuming a transaction is marked with a 'sale' type
+        $salesToday = $affiliate->referredTransactions()->where('type', 'sale')
+                                                        ->whereDate('created_at', now()->toDateString())->count();
+        $salesThisMonth = $affiliate->referredTransactions()->where('type', 'sale')
+                                                            ->whereMonth('created_at', now()->month)
+                                                            ->whereYear('created_at', now()->year)->count();
+
+        // Transaction Value
+        $transactionValueToday = $affiliate->referredTransactions()->where('type', 'sale')
+                                                                ->whereDate('created_at', now()->toDateString())
+                                                                ->sum('purchase_amount');
+        $transactionValueThisMonth = $affiliate->referredTransactions()->where('type', 'sale')
+                                                                    ->whereMonth('created_at', now()->month)
+                                                                    ->whereYear('created_at', now()->year)
+                                                                    ->sum('purchase_amount');
+
+        // Refunds
+        $refundsToday = $affiliate->referredTransactions()->where('type', 'refund')
+                                                        ->whereDate('created_at', now()->toDateString())->count();
+        $refundsThisMonth = $affiliate->referredTransactions()->where('type', 'refund')
+                                                            ->whereMonth('created_at', now()->month)
+                                                            ->whereYear('created_at', now()->year)->count();
+
+        // Chargebacks
+        $chargebacksToday = $affiliate->referredTransactions()->where('type', 'chargeback')
+                                                            ->whereDate('created_at', now()->toDateString())->count();
+        $chargebacksThisMonth = $affiliate->referredTransactions()->where('type', 'chargeback')
+                                                                ->whereMonth('created_at', now()->month)
+                                                                ->whereYear('created_at', now()->year)->count();
+
+        // Commission/Earnings
+        $commissionEarningsToday = $affiliate->referredTransactions()->whereDate('created_at', now()->toDateString())
+                                                                    ->sum('earnings');
+        $commissionEarningsThisMonth = $affiliate->referredTransactions()->whereMonth('created_at', now()->month)
+                                                                        ->whereYear('created_at', now()->year)
+                                                                        ->sum('earnings');
 
         return view('laravel-affiliate-system::affiliates.dashboard', [
             'affiliate'         =>  $affiliate,
             'totalEarnings'     =>  $totalEarnings,
             'unpaidEarnings'    =>  $unpaidEarnings,
-            // Pass other necessary data to the view...
+            'rawClicksToday' => $rawClicksToday,
+            'rawClicksThisMonth' => $rawClicksThisMonth,
+            'uniqueClicksToday' => $uniqueClicksToday,
+            'uniqueClicksThisMonth' => $uniqueClicksThisMonth,
+            'signupsToday' => $signupsToday,
+            'signupsThisMonth' => $signupsThisMonth,
+            'salesToday' => $salesToday,
+            'salesThisMonth' => $salesThisMonth,
+            'transactionValueToday' => $transactionValueToday,
+            'transactionValueThisMonth' => $transactionValueThisMonth,
+            'refundsToday' => $refundsToday,
+            'refundsThisMonth' => $refundsThisMonth,
+            'chargebacksToday' => $chargebacksToday,
+            'chargebacksThisMonth' => $chargebacksThisMonth,
+            'commissionEarningsToday' => $commissionEarningsToday,
+            'commissionEarningsThisMonth' => $commissionEarningsThisMonth,
         ]);
     }
 
