@@ -22,7 +22,6 @@
         <div>
             <h2 class="text-xl font-bold">Affiliate Details</h2>
             <p><span class="font-semibold">Referred Users:</span> {{ $affiliate->referrals()->count() }}</p>
-            <p><span class="font-semibold">Referred Transactions:</span>  {{ $affiliate->referredTransactions()->count() }}</p>
             <p><span class="font-semibold">Commission Rate:</span>  {{ $affiliate->commissionRate() * 100 }}% </p>
             <p><span class="font-semibold">Unpaid Earnings:</span>  ${{ number_format($affiliate->unpaidEarnings(), 2) }}</p>
             <p><span class="font-semibold">Referral Code:</span>  {{ $affiliate->referral_code }}</p>

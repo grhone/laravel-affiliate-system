@@ -47,22 +47,22 @@
                     <td>{{ $affiliate->commission_rate ?? 'Default' }}</td>
                     <td>{{ $affiliate->approved ? 'Approved' : 'Pending' }}</td>
                     <td>
-                        <a href="{{ route('admin.affiliate.show', $affiliate->id) }}" class="btn btn-info">View</a>
-                        <a href="{{ route('admin.affiliate.edit', $affiliate->id) }}" class="btn btn-primary">Edit</a>
+                        <a href="{{ route('admin.affiliate.show', $affiliate->id) }}" class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150">View</a>
+                        <a href="{{ route('admin.affiliate.edit', $affiliate->id) }}" class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150">Edit</a>
                         @if(!$affiliate->approved)
                             <form action="{{ route('admin.approve.affiliate', $affiliate->id) }}" method="POST" style="display:inline-block;">
                                 @csrf
-                                <button type="submit" class="btn btn-success">Approve</button>
+                                <button type="submit" class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150">Approve</button>
                             </form>
                             <form action="{{ route('admin.deny.affiliate', $affiliate->id) }}" method="POST" style="display:inline-block;">
                                 @csrf
-                                <button type="submit" class="btn btn-danger">Deny</button>
+                                <button type="submit" class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150">Deny</button>
                             </form>
                         @endif
                         <form action="{{ route('admin.affiliate.destroy', $affiliate->id) }}" method="POST" style="display:inline-block;">
                             @csrf
                             @method('DELETE')
-                            <button type="submit" class="btn btn-warning">Delete</button>
+                            <button type="submit" class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150">Delete</button>
                         </form>
                     </td>
                 </tr>

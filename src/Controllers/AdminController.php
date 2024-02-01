@@ -66,7 +66,7 @@ class AdminController extends Controller
     
         // Execute the query and get the results
         $affiliates = $query->get();
-        
+
         return view('laravel-affiliate-system::admin.affiliates.manage_affiliates', compact('affiliates'));
     }
 
@@ -118,7 +118,13 @@ class AdminController extends Controller
     public function show($id)
     {
         $affiliate = Affiliate::findOrFail($id);
-        return view('laravel-affiliate-system::admin.affiliates.show', compact('affiliate'));
+
+        // Paginate the data
+        $referrals = $affiliate->referrals()->paginate(15, ['*'], 'referrals'); 
+        $clicks = $affiliate->clicks()->paginate(15, ['*'], 'clicks'); 
+        $transactions = $affiliate->referredTransactions()->paginate(15, ['*'], 'transactions'); 
+
+        return view('laravel-affiliate-system::admin.affiliates.show', compact('affiliate', 'referrals', 'clicks', 'transactions'));
     }
 
 

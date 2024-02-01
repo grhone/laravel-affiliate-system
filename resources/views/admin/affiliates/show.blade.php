@@ -12,49 +12,113 @@
         </a>
     </div>
 
-    <h1>Affiliate Details</h1>
+    <h1 class="text-2xl font-bold mb-6">Affiliate Details</h1>
+
+    <a href="{{ route('admin.affiliate.edit', $affiliate->id) }}" class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150">Edit</a>
 
     <div>
-        <h2>{{ $affiliate->first_name }} {{ $affiliate->last_name }}</h2>
-        <p>Approved: {{ $affiliate->approved ? 'Yes' : 'No' }}</p>
-        <p>Email: {{ $affiliate->user->email }}</p>
-        <p>Website: {{ $affiliate->website ?? 'N/A' }}</p>
-        <p>Company Name: {{ $affiliate->company_name ?? 'N/A' }}</p>
-        <p>Street Name: {{ $affiliate->street_name }}</p>
-        <p>City: {{ $affiliate->city }}</p>
-        <p>Country: {{ $affiliate->country }}</p>
-        <p>State: {{ $affiliate->state }}</p>
-        <p>Zip Code: {{ $affiliate->zipcode }}</p>
-        <p>Phone Number: {{ $affiliate->phone_number ?? 'N/A' }}</p>
-        <p>VAT Number: {{ $affiliate->vat_number ?? 'N/A' }}</p>
-        <p>Minimum Payout: ${{ number_format($affiliate->minimum_payout, 2) }}</p>
-        <p>Payout Method: {{ ucfirst($affiliate->payout_method) }}</p>
-        <p>PayPal Email: {{ $affiliate->paypal_email ?? 'N/A' }}</p>
-        @if($affiliate->approved)
-        <p>Referred Users: {{ $affiliate->referrals()->count() }}</p>
-        <p>Referred Transactions: {{ $affiliate->referredTransactions()->count() }}</p>
-        <p>Commission Rate: {{ $affiliate->commissionRate() * 100 }}% </p>
-        <p>Unpaid Earnings: ${{ number_format($affiliate->unpaidEarnings(), 2) }}</p>
-        <p>Referral Code: {{ $affiliate->referral_code }}</p>
+        <h2 class="text-xl font-bold mb-6">{{ $affiliate->first_name }} {{ $affiliate->last_name }}</h2>
+        <p><span class="font-semibold">Approved:</span> {{ $affiliate->approved ? 'Yes' : 'No' }}</p>
+        <p><span class="font-semibold">Email:</span> {{ $affiliate->user->email }}</p>
+        <p><span class="font-semibold">Website:</span> {{ $affiliate->website ?? 'N/A' }}</p>
+        <p><span class="font-semibold">Company Name:</span> {{ $affiliate->company_name ?? 'N/A' }}</p>
+        <p><span class="font-semibold">Referral Code:</span> {{ $affiliate->referral_code }}</p>
+        <p><span class="font-semibold">Commission Rate:</span> {{ $affiliate->commissionRate() * 100 }}% </p>
+        <p><span class="font-semibold">Unpaid Earnings:</span> ${{ number_format($affiliate->unpaidEarnings(), 2) }}</p>
+
+        <h2 class="text-xl font-bold my-6">Address</h2>
+        <p><span class="font-semibold">Street Name:</span> {{ $affiliate->street_name }}</p>
+        <p><span class="font-semibold">City:</span> {{ $affiliate->city }}</p>
+        <p><span class="font-semibold">Country:</span> {{ $affiliate->country }}</p>
+        <p><span class="font-semibold">State:</span> {{ $affiliate->state }}</p>
+        <p><span class="font-semibold">Zip Code:</span> {{ $affiliate->zipcode }}</p>
+        <p><span class="font-semibold">Phone Number:</span> {{ $affiliate->phone_number ?? 'N/A' }}</p>
+        <p><span class="font-semibold">VAT Number:</span> {{ $affiliate->vat_number ?? 'N/A' }}</p>
+
+        <h2 class="text-xl font-bold my-6">Payout Information</h2>
+        <p><span class="font-semibold">Minimum Payout:</span> ${{ number_format($affiliate->minimum_payout, 2) }}</p>
+        <p><span class="font-semibold">Payout Method:</span> {{ ucfirst($affiliate->payout_method) }}</p>
+        <p><span class="font-semibold">PayPal Email:</span> {{ $affiliate->paypal_email ?? 'N/A' }}</p>
+    </div>
+
+    <div class="mb-6">
+        @if($referrals->count() > 0)
+            <h2 class="text-xl font-bold mb-6">Referred Users</h2>
+            <table class="table-auto w-full">
+                <tr>
+                    <th>User Name</th>
+                    <th>Email</th>
+                    <th>Date Created</th>
+                @foreach($referrals as $referral)
+                <tr>
+                    <td class="text-center">{{ $referral->referredUser->name }}</td>
+                    <td class="text-center">{{ $referral->referredUser->email }}</td>
+                    <td class="text-center">{{ $referral->created_at->format('M, d Y g:i:s A') }}</td>
+                </tr>
+
+                @endforeach
+            </table>
+
+            <!-- Conditionally Display Pagination Controls -->
+            @if($referrals->hasPages())
+                {{ $referrals->links() }}
+            @endif
+        @else 
+            <p>No referrals to show.</p>
         @endif
     </div>
 
-    @if($affiliate->referrals()->count() > 0)
-    <h2>Referred Users</h2>
-    <ul>
-        @foreach($affiliate->referrals() as $referral)
-        <li>{{ $referredTransaction->created_at }}</li>
-        @endforeach
-    </ul>
-    @endif
+    <div class="mb-6">
+        <h2 class="text-xl font-bold mb-6">Referred Transactions</h2>
+        @if($transactions->count() > 0)
+            <table class="table-auto w-full">
+                <tr>
+                    <th>User</th>
+                    <th>Purchase Amount</th>
+                    <th>Earnings</th>
+                    <th>Transaction Type</th>
+                    <th>Date</th>
+                @foreach($transactions as $transaction)
+                <tr>
+                    <td class="text-center">{{ $transaction->referral->referredUser->name }}</td>
+                    <td class="text-center">{{ $transaction->purchase_amount }}</td>
+                    <td class="text-center">{{ $transaction->earnings }}</td>
+                    <td class="text-center">{{ $transaction->type }}</td>
+                    <td class="text-center">{{ $transaction->created_at->format('M, d Y g:i:s A') }}</td>
+                </tr>
 
-    @if($affiliate->referredTransactions()->count() > 0)
-    <h2>Referred Transactions</h2>
-    <ul>
-        @foreach($affiliate->referredTransactions() as $referredTransaction)
-        <li>{{ $referredTransaction->created_at }}</li>
-        @endforeach
-    </ul>
-    @endif
+                @endforeach
+            </table>
+        @else 
+            <p>No transactions to show.</p>
+        @endif
+    </div>
+
+    <div class="mb-6">
+        <h2 class="text-xl font-bold mb-6">Referral Clicks</h2>
+        @if($clicks->count() > 0)
+            <table class="table-auto w-full">
+                <tr>
+                    <th>IP Address</th>
+                    <th>Referring URL</th>
+                    <th>Date Created</th>
+                @foreach($clicks as $click)
+                <tr>
+                    <td class="text-center">{{ $click->ip }}</td>
+                    <td class="text-center">{{ $click->referring_url }}</td>
+                    <td class="text-center">{{ $click->created_at->format('M, d Y g:i:s A') }}</td>
+                </tr>
+
+                @endforeach
+            </table>
+
+            <!-- Conditionally Display Pagination Controls -->
+            @if($clicks->hasPages())
+                {{ $clicks->links() }}
+            @endif
+        @else 
+            <p>No clicks to show.</p>
+        @endif
+    </div>
 
 </x-admin-layout>
