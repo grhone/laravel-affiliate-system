@@ -33,15 +33,15 @@ class AffiliateController extends Controller
         $unpaidEarnings = $affiliate->unpaidEarnings();
 
         // Calculate Raw Clicks
-        $rawClicksToday = $affiliate->clicks()->whereDate('clicks.created_at', now()->toDateString())->count();
-        $rawClicksThisMonth = $affiliate->clicks()->whereMonth('clicks.created_at', now()->month)
-                                                ->whereYear('clicks.created_at', now()->year)->count();
+        $rawClicksToday = $affiliate->clicks()->whereDate('referral_clicks.created_at', now()->toDateString())->count();
+        $rawClicksThisMonth = $affiliate->clicks()->whereMonth('referral_clicks.created_at', now()->month)
+                                                ->whereYear('referral_clicks.created_at', now()->year)->count();
 
         // Assuming you have a way to distinguish unique clicks, for example by IP or session ID
         // This is a placeholder for the logic you might use
-        $uniqueClicksToday = $affiliate->clicks()->whereDate('clicks.created_at', now()->toDateString())->distinct('ip')->count();
-        $uniqueClicksThisMonth = $affiliate->clicks()->whereMonth('clicks.created_at', now()->month)
-                                                    ->whereYear('clicks.created_at', now()->year)->distinct('ip')->count();
+        $uniqueClicksToday = $affiliate->clicks()->whereDate('referral_clicks.created_at', now()->toDateString())->distinct('ip')->count();
+        $uniqueClicksThisMonth = $affiliate->clicks()->whereMonth('referral_clicks.created_at', now()->month)
+                                                    ->whereYear('referral_clicks.created_at', now()->year)->distinct('ip')->count();
 
         // Signups - Assuming a referral that resulted in a user creation
         $signupsToday = $affiliate->referrals()->whereDate('referrals.created_at', now()->toDateString())->count();
