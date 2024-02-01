@@ -39,7 +39,7 @@
     <div>
         <h2 class="text-xl font-bold">Overview</h2>
         <table class="table-auto w-full">
-            <tr><th><th><th>Today</th><th>This Month</th></tr>
+            <tr><th></th><th>Today</th><th>This Month</th></tr>
             <tr><td>Raw Clicks</td><td>{{ $rawClicksToday }}</td><td>{{ $rawClicksThisMonth }}</td></tr>
             <tr><td>Unique Clicks</td><td>{{ $uniqueClicksToday }}</td><td>{{ $uniqueClicksThisMonth }}</td></tr>
             <tr><td>Signups</td><td>{{ $signupsToday }}</td><td>{{ $signupsThisMonth }}</td></tr>

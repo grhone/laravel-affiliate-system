@@ -26,6 +26,7 @@
         </div>
     @endif
 
+    @if($affiliates->count() > 0 )
     <table class="w-full">
         <thead>
             <tr>
@@ -69,4 +70,7 @@
         </tbody>
 
     </table>
+    @else 
+    <p>No affiliates match this request.</p>
+    @endif
 </x-admin-layout>
