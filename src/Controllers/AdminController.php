@@ -154,7 +154,7 @@ class AdminController extends Controller
         // Validate and update logic here
         $affiliate->update($request->all());
 
-        return redirect()->route('admin.affilate.show')
+        return redirect()->route('admin.affilate.show', ['id' => $id])
                         ->with('success', 'Affiliate updated successfully.');
     }
 
