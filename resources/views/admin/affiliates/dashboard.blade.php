@@ -2,26 +2,32 @@
 
 <x-admin-layout>
 
-    <h1>Admin Affiliate Dashboard</h1>
+    <div class="w-full">
+        <h1 class="text-xl font-bold mb-6">Admin Affiliate Dashboard</h1>
 
-    <div class="dashboard-widgets">
-        {{-- Ensure you have the necessary data passed from your controller to populate these widgets --}}
-        <div class="widget">
-            <h3>Total Approved Affiliates</h3>
-            <p>{{ $totalApprovedAffiliates ?? 'N/A' }}</p>
+        <div class="w-full grid grid-cols-1 md:grid-cols-3 gap-4">
+
+            <a href="{{ route('admin.manage_affiliates') }}">
+                <div class="p-6 border flex flex-col min-w-0 break-words bg-white w-full mb-10 shadow-lg rounded">
+                    <p class="text-lg font-bold">Total Affiliates</p>
+                    <p>{{ $totalAffiliates ?? 'N/A' }}</p>
+                </div>
+            </a>
+
+            <a href="{{ route('admin.payments.index') }}">
+            <div class="p-6 border flex flex-col min-w-0 break-words bg-white w-full mb-10 shadow-lg rounded">
+                <p class="text-lg font-bold">Total Unpaid Earnings</p>
+                <p>${{ $totalUnpaidEarnings ?? '0.00' }}</p>
+            </div>
+
+            <a href="{{ route('admin.manage_affiliates', ['status' => 'pending']) }}">
+                <div class="p-6 border flex flex-col min-w-0 break-words bg-white w-full mb-10 shadow-lg rounded">
+                    <p class="text-lg font-bold">Pending Approvals</p>
+                    <p>{{ $pendingAffiliates ?? '0' }}</p>
+                </div>
+            </a>
+
+            {{-- Additional widgets can be added here --}}
         </div>
-
-        <div class="widget">
-            <h3>Total Unpaid Earnings</h3>
-            <p>${{ $totalUnpaidEarnings ?? '0.00' }}</p>
-        </div>
-
-        <div class="widget">
-            <h3><a href="{{ route('admin.manage_affiliates') }}">Pending Approvals</a></h3>
-            <p>{{ $pendingAffiliates ?? '0' }}</p>
-        </div>
-
-        {{-- Additional widgets can be added here --}}
-    </div>
-
+    </div> 
 </x-admin-layout>

@@ -41,9 +41,32 @@ class AdminController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function manageAffiliates()
+    public function manageAffiliates(Request $request)
     {
-        $affiliates = Affiliate::all();
+        $query = Affiliate::query();
+
+        // Check for status filter
+        if ($request->filled('status')) {
+            $status = $request->input('status') === 'pending' ? false : true;
+            $query->where('approved', $status);
+        }
+    
+        // Check for search query (assuming you want to search by name or email)
+        if ($request->filled('search')) {
+            $searchTerm = $request->input('search');
+            $query->where(function ($query) use ($searchTerm) {
+                $query->where('first_name', 'like', '%' . $searchTerm . '%')
+                      ->orWhere('last_name', 'like', '%' . $searchTerm . '%')
+                      // Assuming 'email' is part of the affiliated user's information
+                      ->orWhereHas('user', function ($query) use ($searchTerm) {
+                          $query->where('email', 'like', '%' . $searchTerm . '%');
+                      });
+            });
+        }
+    
+        // Execute the query and get the results
+        $affiliates = $query->get();
+        
         return view('laravel-affiliate-system::admin.affiliates.manage_affiliates', compact('affiliates'));
     }
 
