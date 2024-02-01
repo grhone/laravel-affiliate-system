@@ -17,11 +17,11 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('affiliate_id');
             $table->unsignedBigInteger('referred_user_id');
-            //$table->boolean('conversion')->default(false);
-            //$table->decimal('earnings', 10, 2)->default(0.00);
+            $table->unsignedBigInteger('click_id')->nullable()->after('id');
             $table->timestamps();
             $table->softDeletes();
 
+            $table->foreign('click_id')->references('id')->on('clicks')->onDelete('set null');
             $table->foreign('affiliate_id')->references('id')->on('affiliates');
             $table->foreign('referred_user_id')->references('id')->on('users');
         });

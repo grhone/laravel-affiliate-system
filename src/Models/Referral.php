@@ -46,6 +46,12 @@ class Referral extends Model
         return $this->belongsTo('Grhone\LaravelAffiliateSystem\Models\Affiliate', 'affiliate_id');
     }
 
+    public function click()
+    {
+        return $this->belongsTo(Click::class);
+    }
+
+
     /**
      * Referred user relationship.
      *

@@ -23,7 +23,12 @@ trait Referrable
                     $referral = new Referral();
                     $referral->affiliate_id = $affiliate->id;
                     $referral->referred_user_id = $model->id;
-                    $referral->conversion = true; // Or any other logic to determine conversion
+
+                    // Check if a click_id cookie exists and associate the referral with the click
+                    if ($clickId = request()->cookie('click_id')) {
+                        $referral->click_id = $clickId;
+                    }
+
                     $referral->save();
 
                     // Additional logic like updating affiliate earnings, sending notifications, etc.

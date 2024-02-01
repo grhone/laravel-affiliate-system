@@ -6,7 +6,7 @@ return [
         'affiliate' => ['auth'], // Example of default affiliate route middleware. Could include 'verified', etc.
         'admin' => ['auth'], // Add your admin middleware. Could use spatie/laravel-permission's 'role:admin|super-admin'.    
     ],
-    
+
     /*
      * Affiliate referral code settings
      */
@@ -54,7 +54,10 @@ return [
 
     /*
      * Affiliate URL parameter settings
+     * 
+     *  DON'T CHANGE THIS ONCE IT'S BEEN SET. 
+     *  Changing this will invalidate all of your affiliates' existing links.
      */
-    'url_parameter' => 'a_aid', // The parameter in the URL used to identify the affiliate ID. Changing this will invalidate all of your affiliates' existing links.
+    'url_parameter' => 'a_aid', // The parameter in the URL used to identify the affiliate ID. Choose something that won't be used anywhere else in the program. 
 
 ];

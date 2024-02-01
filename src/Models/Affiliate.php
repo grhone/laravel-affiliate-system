@@ -60,6 +60,16 @@ class Affiliate extends Model
     }
 
     /**
+     * Clicks relationship.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function clicks()
+    {
+        return $this->hasMany(Click::class);
+    }
+
+    /**
      * Referrals relationship.
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
