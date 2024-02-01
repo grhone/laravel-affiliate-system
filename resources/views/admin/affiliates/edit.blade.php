@@ -79,7 +79,7 @@
         </div>
 
         <div>
-            <label>Commission Rate (%)  (Default if blank)</label>
+            <label>Commission Rate (0.10 = 10%) (Default if blank)</label>
             <input type="number" step="0.01" name="commission_rate" value="{{ $affiliate->commission_rate }}">
         </div>
 

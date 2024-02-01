@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('clicks', function (Blueprint $table) {
+        Schema::create('affiliate_clicks', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('affiliate_id')->nullable();
             $table->string('ip');
@@ -32,6 +32,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('clicks');
+        Schema::dropIfExists('affiliate_clicks');
     }
 };

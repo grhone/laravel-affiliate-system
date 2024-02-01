@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('payments', function (Blueprint $table) {
+        Schema::create('affiliate_payments', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('affiliate_id');
             $table->decimal('amount', 10, 2);
@@ -35,6 +35,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('payments');
+        Schema::dropIfExists('affiliate_payments');
     }
 };

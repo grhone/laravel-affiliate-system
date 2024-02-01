@@ -24,7 +24,7 @@ class TrackingServiceProvider extends ServiceProvider
                 
                 if ($affiliate) {
                     // Save the click information and get the created click instance
-                    $click = Click::create([
+                    $click = AffiliateClick::create([
                         'affiliate_id' => $affiliate->id,
                         'ip' => $request->ip(),
                         'referring_url' => $request->headers->get('referer'),

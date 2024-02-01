@@ -48,7 +48,7 @@ class Referral extends Model
 
     public function click()
     {
-        return $this->belongsTo(Click::class);
+        return $this->belongsTo(AffiliateClick::class);
     }
 
 

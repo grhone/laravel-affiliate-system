@@ -33,7 +33,7 @@
         @if($affiliate->approved)
         <p>Referred Users: {{ $affiliate->referrals()->count() }}</p>
         <p>Referred Transactions: {{ $affiliate->referredTransactions()->count() }}</p>
-        <p>Commission Rate: {{ $affiliate->commissionRate() }}% </p>
+        <p>Commission Rate: {{ $affiliate->commissionRate() * 100 }}% </p>
         <p>Unpaid Earnings: ${{ number_format($affiliate->unpaidEarnings(), 2) }}</p>
         <p>Referral Code: {{ $affiliate->referral_code }}</p>
         @endif

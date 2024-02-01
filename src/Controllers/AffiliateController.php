@@ -58,7 +58,7 @@ class AffiliateController extends Controller
             $affiliate = $this->affiliateService->registerAffiliate($request->validated());
             return redirect()->route('affiliate.dashboard')->with('success', 'Affiliate created successfully.');
         } catch (Exception $e) {
-            return redirect()->back()->withErrors('Failed to create affiliate.');
+            return back()->withErrors($e->getMessage());
         }
     }
 

@@ -66,7 +66,7 @@ class Affiliate extends Model
      */
     public function clicks()
     {
-        return $this->hasMany(Click::class);
+        return $this->hasMany(AffiliateClick::class);
     }
 
     /**

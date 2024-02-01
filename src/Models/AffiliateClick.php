@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Click extends Model
+class AffiliateClick extends Model
 {
     protected $fillable = ['affiliate_id', 'ip', 'referring_url'];
 
