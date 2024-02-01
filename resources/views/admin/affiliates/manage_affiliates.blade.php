@@ -41,12 +41,12 @@
         <tbody>
             @foreach($affiliates as $affiliate)
                 <tr>
-                    <td>{{ $affiliate->id }}</td>
-                    <td>{{ $affiliate->first_name }} {{ $affiliate->last_name }}</td>
-                    <td>{{ $affiliate->user->email }}</td>
-                    <td>{{ $affiliate->commission_rate ?? 'Default' }}</td>
-                    <td>{{ $affiliate->approved ? 'Approved' : 'Pending' }}</td>
-                    <td>
+                    <td class="text-center">{{ $affiliate->id }}</td>
+                    <td class="text-center">{{ $affiliate->first_name }} {{ $affiliate->last_name }}</td>
+                    <td class="text-center">{{ $affiliate->user->email }}</td>
+                    <td class="text-center">{{ $affiliate->commission_rate ?? 'Default' }}</td>
+                    <td class="text-center">{{ $affiliate->approved ? 'Approved' : 'Pending' }}</td>
+                    <td class="text-center">
                         <a href="{{ route('admin.affiliate.show', $affiliate->id) }}" class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150">View</a>
                         <a href="{{ route('admin.affiliate.edit', $affiliate->id) }}" class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150">Edit</a>
                         @if(!$affiliate->approved)
@@ -59,7 +59,7 @@
                                 <button type="submit" class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150">Deny</button>
                             </form>
                         @endif
-                        <form action="{{ route('admin.affiliate.destroy', $affiliate->id) }}" method="POST" style="display:inline-block;">
+                        <form action="{{ route('admin.affiliate.destroy', $affiliate->id) }}" method="POST" style="display:inline-block;" onclick="return confirm('Are you sure you would like to delete this afffiliate? It will remove all affiliate data and cannot be retrieved.');" >
                             @csrf
                             @method('DELETE')
                             <button type="submit" class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150">Delete</button>
