@@ -5,6 +5,7 @@ return [
     'middleware' => [
         'affiliate' => ['auth'], // Example of default affiliate route middleware. Could include 'verified', etc.
         'admin' => ['auth'], // Add your admin middleware. Could use spatie/laravel-permission's 'role:admin|super-admin'.    
+        'payment' => [], // Any additional middleware in addition to the admin middleware. Only needed if you have some specific admin role that will need to process payments.    
     ],
 
     /*

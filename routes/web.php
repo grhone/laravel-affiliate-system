@@ -38,18 +38,20 @@ Route::prefix('admin')->name('admin.')->middleware(config('affiliate.middleware.
     Route::post('/approve-affiliate/{id}', [AdminController::class, 'approveAffiliate'])->name('approve.affiliate');
     Route::post('/deny-affiliate/{id}', [AdminController::class, 'denyAffiliate'])->name('deny.affiliate');
     // Additional admin-specific routes...
+
+    /*
+    |--------------------------------------------------------------------------
+    | Payment Routes
+    |--------------------------------------------------------------------------
+    */
+    Route::prefix('payments')->name('payments.')->middleware(config('affiliate.middleware.payment'))->group(function () {
+        Route::get('/', [PaymentController::class, 'index'])->name('index');
+        Route::post('/process', [PaymentController::class, 'processAllPayments'])->name('process.all');
+        // Additional payment-specific routes...
+    });
 });
 
-/*
-|--------------------------------------------------------------------------
-| Payment Routes
-|--------------------------------------------------------------------------
-*/
-Route::prefix('payments')->name('payments.')->middleware(config('affiliate.middleware.admin', ['auth']))->group(function () {
-    Route::get('/', [PaymentController::class, 'index'])->name('index');
-    Route::post('/process', [PaymentController::class, 'processAllPayments'])->name('process.all');
-    // Additional payment-specific routes...
-});
+
 
 /*
 |--------------------------------------------------------------------------
