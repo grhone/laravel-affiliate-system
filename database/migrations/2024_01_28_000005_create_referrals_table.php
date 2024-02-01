@@ -21,7 +21,7 @@ return new class extends Migration
             $table->timestamps();
             $table->softDeletes();
 
-            $table->foreign('click_id')->references('id')->on('affiliate_clicks')->onDelete('set null');
+            $table->foreign('click_id')->references('id')->on('referral_clicks')->onDelete('set null');
             $table->foreign('affiliate_id')->references('id')->on('affiliates');
             $table->foreign('referred_user_id')->references('id')->on('users');
         });

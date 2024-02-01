@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Models;
+namespace Grhone\LaravelAffiliateSystem\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class AffiliateClick extends Model
+class ReferralClick extends Model
 {
     protected $fillable = ['affiliate_id', 'ip', 'referring_url'];
 

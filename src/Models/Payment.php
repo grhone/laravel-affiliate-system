@@ -9,6 +9,8 @@ class Payment extends Model
 {
     use SoftDeletes;
 
+    protected $table = 'affiliate_payments';
+
     /**
      * The attributes that are mass assignable.
      *

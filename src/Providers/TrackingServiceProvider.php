@@ -4,6 +4,8 @@ namespace Grhone\LaravelAffiliateSystem\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Routing\Router;
+use Grhone\LaravelAffiliateSystem\Models\Affiliate;
+use Grhone\LaravelAffiliateSystem\Models\ReferralClick;
 
 class TrackingServiceProvider extends ServiceProvider
 {
@@ -24,7 +26,7 @@ class TrackingServiceProvider extends ServiceProvider
                 
                 if ($affiliate) {
                     // Save the click information and get the created click instance
-                    $click = AffiliateClick::create([
+                    $click = ReferralClick::create([
                         'affiliate_id' => $affiliate->id,
                         'ip' => $request->ip(),
                         'referring_url' => $request->headers->get('referer'),
