@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('affiliate_id');
             $table->unsignedBigInteger('referred_user_id');
-            $table->unsignedBigInteger('click_id')->nullable()->after('id');
+            $table->unsignedBigInteger('click_id')->nullable();
             $table->timestamps();
             $table->softDeletes();
 

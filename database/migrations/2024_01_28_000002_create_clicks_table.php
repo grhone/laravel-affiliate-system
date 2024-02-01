@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('clicks', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('affiliate_id')->nullable()->after('id');
+            $table->unsignedBigInteger('affiliate_id')->nullable();
             $table->string('ip');
             $table->text('referring_url')->nullable();
             $table->timestamps();
