@@ -8,10 +8,13 @@ use Grhone\LaravelAffiliateSystem\Services\PaymentService;
 use Grhone\LaravelAffiliateSystem\Services\PayPalService;
 use Laravel\Cashier\Events\SubscriptionCreated;
 use Laravel\Cashier\Events\SubscriptionRenewed;
+use Grhone\LaravelAffiliateSystem\Listeners\HandleSubscriptionCreated;
+use Grhone\LaravelAffiliateSystem\Listeners\HandleSubscriptionRenewed;
 use Grhone\LaravelAffiliateSystem\Models\Affiliate;
 use Grhone\LaravelAffiliateSystem\Models\Referral;
 use Stripe\StripeClient;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Event;
 
 class AffiliateServiceProvider extends ServiceProvider
 {
@@ -33,15 +36,25 @@ class AffiliateServiceProvider extends ServiceProvider
             // Additional files to publish...
         ]);
 
-        $this->app['events']->listen(SubscriptionCreated::class, function ($event) {
-            $transactionAmount = $this->getTransactionAmountFromSubscription($event->subscription);
-            $this->handleSubscriptionEvent($event->user, $transactionAmount);
-        });
+        Event::listen(
+            SubscriptionCreated::class,
+            [HandleSubscriptionCreated::class, 'handle']
+        );
+
+        Event::listen(
+            SubscriptionRenewed::class,
+            [HandleSubscriptionRenewed::class, 'handle']
+        );
+
+        // $this->app['events']->listen(SubscriptionCreated::class, function ($event) {
+        //     $transactionAmount = $this->getTransactionAmountFromSubscription($event->subscription);
+        //     $this->handleSubscriptionEvent($event->user, $transactionAmount);
+        // });
         
-        $this->app['events']->listen(SubscriptionRenewed::class, function ($event) {
-            $transactionAmount = $this->getTransactionAmountFromSubscription($event->subscription);
-            $this->handleSubscriptionEvent($event->user, $transactionAmount);
-        });
+        // $this->app['events']->listen(SubscriptionRenewed::class, function ($event) {
+        //     $transactionAmount = $this->getTransactionAmountFromSubscription($event->subscription);
+        //     $this->handleSubscriptionEvent($event->user, $transactionAmount);
+        // });
     }
 
     /**
