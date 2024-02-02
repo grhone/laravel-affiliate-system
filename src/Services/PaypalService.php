@@ -44,13 +44,14 @@ class PayPalService
         $payout = new Payout();
         $payout->setSenderBatchHeader($senderBatchHeader);
 
+        $amount = new Currency();
+        $amount->setValue($payoutData['amount']);
+        $amount->setCurrency('USD');
+
         $senderItem = new PayoutItem();
         $senderItem->setRecipientType($payoutData['recipient_type'])
                     ->setReceiver($payoutData['receiver'])
-                    ->setAmount(new Currency(json_encode([
-                        'value' => $payoutData['amount'],
-                        'currency' => 'USD'
-                    ])))
+                    ->setAmount($amount)
                     ->setNote($payoutData['note'])
                     ->setSenderItemId($payoutData['sender_item_id']);
         $payout->addItem($senderItem);
