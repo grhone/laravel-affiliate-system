@@ -35,12 +35,12 @@ class TransactionService
      * @param float $transactionAmount The transaction amount in dollars.
      * @return void
      */
-    public function handleSubscriptionEvent($user, $transactionAmount)
+    public function handleSubscriptionEvent($user, $type, $transactionAmount)
     {
         // Check if the user has an existing referral
         $referral = Referral::where('referred_user_id', $user->id)->first();
 
-        if ($referral && $referral->conversion) {
+        if ($referral) {
             // Calculate earnings for this referral based on the transaction amount
             $earnings = $this->calculateEarningsForReferral($referral, $transactionAmount);
 
@@ -48,6 +48,7 @@ class TransactionService
             $referredTransaction = new ReferredTransaction();
             $referredTransaction->referral_id = $referral->id;
             $referredTransaction->purchase_amount = $transactionAmount;
+            $referredTransaction->type = $type;
             $referredTransaction->earnings = $earnings;
             $referredTransaction->save();
         }

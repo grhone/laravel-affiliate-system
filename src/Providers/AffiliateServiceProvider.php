@@ -8,9 +8,6 @@ use Grhone\LaravelAffiliateSystem\Services\PaymentService;
 use Grhone\LaravelAffiliateSystem\Services\PayPalService;
 use Laravel\Cashier\Events\WebhookReceived;
 use Grhone\LaravelAffiliateSystem\Listeners\HandleCashierEvent;
-use Grhone\LaravelAffiliateSystem\Models\Affiliate;
-use Grhone\LaravelAffiliateSystem\Models\Referral;
-use Stripe\StripeClient;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Event;
 
@@ -34,20 +31,12 @@ class AffiliateServiceProvider extends ServiceProvider
             // Additional files to publish...
         ]);
 
+        // Listen for events from Cashier 
         Event::listen(
             WebhookReceived::class,
             [HandleCashierEvent::class, 'handle']
         );
 
-        // $this->app['events']->listen(SubscriptionCreated::class, function ($event) {
-        //     $transactionAmount = $this->getTransactionAmountFromSubscription($event->subscription);
-        //     $this->handleSubscriptionEvent($event->user, $transactionAmount);
-        // });
-        
-        // $this->app['events']->listen(SubscriptionRenewed::class, function ($event) {
-        //     $transactionAmount = $this->getTransactionAmountFromSubscription($event->subscription);
-        //     $this->handleSubscriptionEvent($event->user, $transactionAmount);
-        // });
     }
 
     /**
@@ -82,62 +71,6 @@ class AffiliateServiceProvider extends ServiceProvider
         Route::group(['middleware' => config('affiliate.middleware.regular', ['web'])], function () {
             $this->loadRoutesFrom(__DIR__.'/../../routes/web.php');
         });
-    }
-
-
-    protected function getTransactionAmountFromSubscription($subscription)
-    {
-        // Initialize Stripe Client
-        $stripe = new StripeClient(env('STRIPE_SECRET'));
-
-        // Retrieve the Stripe subscription object
-        try {
-            $stripeSubscription = $stripe->subscriptions->retrieve($subscription->stripe_id);
-            
-            // Extract the transaction amount
-            // Stripe stores amounts in cents, so you may need to convert this to dollars or your desired currency unit
-            $transactionAmount = $stripeSubscription->plan->amount / 100; // Convert to dollars
-
-            return $transactionAmount;
-        } catch (\Exception $e) {
-            // Handle any exceptions, such as API errors
-            \Log::error("Stripe API error: " . $e->getMessage());
-            return 0;
-        }
-    }
-
-
-
-    protected function handleSubscriptionEvent($user, $transactionAmount)
-    {
-        // Check if the user has an existing referral
-        $referral = Referral::where('referred_user_id', $user->id)->first();
-
-        if ($referral && $referral->conversion) {
-            // Calculate earnings for this referral based on the transaction amount
-            $earnings = $this->calculateEarningsForReferral($referral, $transactionAmount);
-
-            // Create a new referred transaction
-            $referredTransaction = new ReferredTransaction();
-            $referredTransaction->referral_id = $referral->id;
-            $referredTransaction->referred_user_id = $user->id;
-            $referredTransaction->earnings = $earnings;
-            $referredTransaction->save();
-
-            // Additional logic as needed
-        }
-    }
-
-    protected function calculateEarningsForReferral(Referral $referral, $transactionAmount)
-    {
-        $affiliate = $referral->affiliate;
-        $commissionRate = $affiliate->commissionRate();
-
-        // Earnings are calculated as a percentage of the transaction amount
-        return $transactionAmount * $commissionRate;
-
-    }
-
-    
+    }    
 
 }

@@ -45,7 +45,6 @@
             <tr><td>Sales/Transactions</td><td>{{ $salesToday }}</td><td>{{ $salesThisMonth }}</td></tr>
             <tr><td>Transaction Value</td><td>{{ $transactionValueToday }}</td><td>{{ $transactionValueThisMonth }}</td></tr>
             <tr><td>Refunds</td><td>{{ $refundsToday }}</td><td>{{ $refundsThisMonth }}</td></tr>
-            <tr><td>Chargebacks</td><td>{{ $chargebacksToday }}</td><td>{{ $chargebacksThisMonth }}</td></tr>
             <tr><td>Commission/Earnings</td><td>{{ $commissionEarningsToday }}</td><td>{{ $commissionEarningsThisMonth  }}</td></tr>
         </table>
     </div>

@@ -71,12 +71,13 @@ class AffiliateController extends Controller
                                                             ->whereMonth('referred_transactions.created_at', now()->month)
                                                             ->whereYear('referred_transactions.created_at', now()->year)->count();
 
-        // Chargebacks
-        $chargebacksToday = $affiliate->referredTransactions()->where('type', 'chargeback')
-                                                            ->whereDate('referred_transactions.created_at', now()->toDateString())->count();
-        $chargebacksThisMonth = $affiliate->referredTransactions()->where('type', 'chargeback')
-                                                                ->whereMonth('referred_transactions.created_at', now()->month)
-                                                                ->whereYear('referred_transactions.created_at', now()->year)->count();
+        // TODO: FIGURE OUT HOW TO DEAL WITH CHARGEBACKS
+        // // Chargebacks
+        // $chargebacksToday = $affiliate->referredTransactions()->where('type', 'chargeback')
+        //                                                     ->whereDate('referred_transactions.created_at', now()->toDateString())->count();
+        // $chargebacksThisMonth = $affiliate->referredTransactions()->where('type', 'chargeback')
+        //                                                         ->whereMonth('referred_transactions.created_at', now()->month)
+        //                                                         ->whereYear('referred_transactions.created_at', now()->year)->count();
 
         // Commission/Earnings
         $commissionEarningsToday = $affiliate->referredTransactions()->whereDate('referred_transactions.created_at', now()->toDateString())
@@ -101,8 +102,8 @@ class AffiliateController extends Controller
             'transactionValueThisMonth' => $transactionValueThisMonth,
             'refundsToday' => $refundsToday,
             'refundsThisMonth' => $refundsThisMonth,
-            'chargebacksToday' => $chargebacksToday,
-            'chargebacksThisMonth' => $chargebacksThisMonth,
+            // 'chargebacksToday' => $chargebacksToday,
+            // 'chargebacksThisMonth' => $chargebacksThisMonth,
             'commissionEarningsToday' => $commissionEarningsToday,
             'commissionEarningsThisMonth' => $commissionEarningsThisMonth,
         ]);

@@ -31,10 +31,31 @@ class HandleCashierEvent
 
             // Handle the subscription event
             if ($user) {
-                $this->transactionService->handleSubscriptionEvent($user, $transactionAmount);
+                $this->transactionService->handleSubscriptionEvent($user, 'sale', $transactionAmount);
             } else {
                 Log::error("User not found.");
             }
         }
+
+        if ($payload['type'] === 'charge.refunded') {
+
+            // Assuming $event->payload['data']['object'] contains the transaction details
+            $invoice = $event->payload['data']['object'];
+
+            // Extract the amount paid from the invoice
+            $transactionAmount = $invoice['amount_refunded'] / 100; // Convert from cents to dollars
+
+            $user = $this->transactionService->getUserFromStripeID($invoice['customer']);
+
+            // Handle the subscription event
+            if ($user) {
+                $this->transactionService->handleSubscriptionEvent($user, 'refund', $transactionAmount);
+            } else {
+                Log::error("User not found.");
+            }
+        }
+
+        // TODO: FIGURE OUT HOW TO DEAL WITH CHARGEBACKS
+
     }
 }
