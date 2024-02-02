@@ -47,7 +47,10 @@ class PayPalService
         $senderItem = new PayoutItem();
         $senderItem->setRecipientType($payoutData['recipient_type'])
                     ->setReceiver($payoutData['receiver'])
-                    ->setAmount(new Currency(json_encode($payoutData['amount'])))
+                    ->setAmount(new Currency(json_encode([
+                        'value' => $payoutData['amount'],
+                        'currency' => 'USD'
+                    ])))
                     ->setNote($payoutData['note'])
                     ->setSenderItemId($payoutData['sender_item_id']);
         $payout->addItem($senderItem);

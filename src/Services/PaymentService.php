@@ -31,7 +31,7 @@ class PaymentService
                     'currency' => 'USD' // Or the currency of your choice
                 ],
                 'note' => 'Affiliate payout',
-                'sender_item_id' => 'payout-' . time() // Unique identifier for tracking the payout
+                'sender_item_id' => uniqid() // Unique identifier for tracking the payout
             ];
 
             // Send payout via PayPal
