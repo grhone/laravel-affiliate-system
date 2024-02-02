@@ -12,7 +12,7 @@ class PaymentService
 {
     protected $paypalService;
 
-    public function __construct(PayPalService $paypalService = null)
+    public function __construct(PayPalService $paypalService)
     {
         $this->paypalService = $paypalService;
     }
@@ -84,10 +84,8 @@ class PaymentService
     {
         $affiliates = Affiliate::approved()->get(); 
 
-        DB::transaction(function () use ($affiliates) {
-            foreach ($affiliates as $affiliate) {
-                $this->processPaymentForAffiliate($affiliate);
-            }
-        });
+        foreach ($affiliates as $affiliate) {
+            $this->processPaymentForAffiliate($affiliate);
+        }
     }
 }

@@ -44,6 +44,7 @@ class HandleCashierEvent
 
             // Extract the amount paid from the invoice
             $transactionAmount = $invoice['amount_refunded'] / 100; // Convert from cents to dollars
+            $transactionAmount = -$transactionAmount; // Make the amount negative
 
             $user = $this->transactionService->getUserFromStripeID($invoice['customer']);
 

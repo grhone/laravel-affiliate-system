@@ -55,21 +55,23 @@ class AffiliateController extends Controller
                                                             ->whereMonth('referred_transactions.created_at', now()->month)
                                                             ->whereYear('referred_transactions.created_at', now()->year)->count();
 
-        // Transaction Value
-        $transactionValueToday = $affiliate->referredTransactions()->where('type', 'sale')
+        // Sale Value
+        $saleValueToday = $affiliate->referredTransactions()->where('type', 'sale')
                                                                 ->whereDate('referred_transactions.created_at', now()->toDateString())
                                                                 ->sum('purchase_amount');
-        $transactionValueThisMonth = $affiliate->referredTransactions()->where('type', 'sale')
+        $saleValueThisMonth = $affiliate->referredTransactions()->where('type', 'sale')
                                                                     ->whereMonth('referred_transactions.created_at', now()->month)
                                                                     ->whereYear('referred_transactions.created_at', now()->year)
                                                                     ->sum('purchase_amount');
 
         // Refunds
-        $refundsToday = $affiliate->referredTransactions()->where('type', 'refund')
-                                                        ->whereDate('referred_transactions.created_at', now()->toDateString())->count();
-        $refundsThisMonth = $affiliate->referredTransactions()->where('type', 'refund')
+        $refundValueToday = $affiliate->referredTransactions()->where('type', 'refund')
+                                                        ->whereDate('referred_transactions.created_at', now()->toDateString())
+                                                        ->sum('purchase_amount');
+        $refundsValueThisMonth = $affiliate->referredTransactions()->where('type', 'refund')
                                                             ->whereMonth('referred_transactions.created_at', now()->month)
-                                                            ->whereYear('referred_transactions.created_at', now()->year)->count();
+                                                            ->whereYear('referred_transactions.created_at', now()->year)
+                                                            ->sum('purchase_amount');
 
         // TODO: FIGURE OUT HOW TO DEAL WITH CHARGEBACKS
         // // Chargebacks

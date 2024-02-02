@@ -61,4 +61,10 @@ return [
      */
     'url_parameter' => 'a_aid', // The parameter in the URL used to identify the affiliate ID. Choose something that won't be used anywhere else in the program. 
 
+    /*
+     * Currency parameter settings
+     * 
+     */
+    'currency' => '$', // Used to display the sales and commissions. Assumes that the entire project is in the same currency.
+
 ];

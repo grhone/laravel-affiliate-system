@@ -17,7 +17,7 @@
             <a href="{{ route('admin.payments.index') }}">
             <div class="p-6 border flex flex-col min-w-0 break-words bg-white w-full mb-10 shadow-lg rounded">
                 <p class="text-lg font-bold">Total Unpaid Earnings</p>
-                <p>${{ $totalUnpaidEarnings ?? '0.00' }}</p>
+                <p>{{ config('affiliate.currency') }}{{ number_format($totalUnpaidEarnings, 2) ?? '0.00' }}</p>
             </div>
 
             <a href="{{ route('admin.manage_affiliates', ['status' => 'pending']) }}">

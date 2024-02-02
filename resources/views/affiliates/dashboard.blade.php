@@ -23,7 +23,7 @@
             <h2 class="text-xl font-bold">Affiliate Details</h2>
             <p><span class="font-semibold">Referred Users:</span> {{ $affiliate->referrals()->count() }}</p>
             <p><span class="font-semibold">Commission Rate:</span>  {{ $affiliate->commissionRate() * 100 }}% </p>
-            <p><span class="font-semibold">Unpaid Earnings:</span>  ${{ number_format($affiliate->unpaidEarnings(), 2) }}</p>
+            <p><span class="font-semibold">Unpaid Earnings:</span>  {{ config('affiliate.currency') }}{{ number_format($affiliate->unpaidEarnings(), 2) }}</p>
             <p><span class="font-semibold">Referral Code:</span>  {{ $affiliate->referral_code }}</p>
         </div>
         {{-- Additional sections like account information, settings, etc. --}}
@@ -39,13 +39,13 @@
         <h2 class="text-xl font-bold">Overview</h2>
         <table class="table-auto w-full">
             <tr><th></th><th>Today</th><th>This Month</th></tr>
-            <tr><td>Raw Clicks</td><td>{{ $rawClicksToday }}</td><td>{{ $rawClicksThisMonth }}</td></tr>
-            <tr><td>Unique Clicks</td><td>{{ $uniqueClicksToday }}</td><td>{{ $uniqueClicksThisMonth }}</td></tr>
-            <tr><td>Signups</td><td>{{ $signupsToday }}</td><td>{{ $signupsThisMonth }}</td></tr>
-            <tr><td>Sales/Transactions</td><td>{{ $salesToday }}</td><td>{{ $salesThisMonth }}</td></tr>
-            <tr><td>Transaction Value</td><td>{{ $transactionValueToday }}</td><td>{{ $transactionValueThisMonth }}</td></tr>
-            <tr><td>Refunds</td><td>{{ $refundsToday }}</td><td>{{ $refundsThisMonth }}</td></tr>
-            <tr><td>Commission/Earnings</td><td>{{ $commissionEarningsToday }}</td><td>{{ $commissionEarningsThisMonth  }}</td></tr>
+            <tr><td>Raw Clicks</td><td class="text-center">{{ $rawClicksToday }}</td><td class="text-center">{{ $rawClicksThisMonth }}</td></tr>
+            <tr><td>Unique Clicks</td><td class="text-center">{{ $uniqueClicksToday }}</td><td class="text-center">{{ $uniqueClicksThisMonth }}</td></tr>
+            <tr><td>Signups</td><td class="text-center">{{ $signupsToday }}</td><td class="text-center">{{ $signupsThisMonth }}</td></tr>
+            <tr><td>Sales/Transactions</td><td class="text-center">{{ $salesToday }}</td><td class="text-center">{{ $salesThisMonth }}</td></tr>
+            <tr><td>Transaction Value</td><td class="text-center">{{ config('affiliate.currency') }}{{ number_format($saleValueToday, 2) }}</td><td class="text-center">{{ config('affiliate.currency') }}{{ number_format($saleValueThisMonth, 2) }}</td></tr>
+            <tr><td>Refunds</td><td class="text-center">{{ config('affiliate.currency') }}{{ number_format($refundValueToday, 2) }}</td><td class="text-center">{{ config('affiliate.currency') }}{{ number_format($refundsValueThisMonth, 2) }}</td></tr>
+            <tr><td>Commission/Earnings</td><td class="text-center">{{ config('affiliate.currency') }}{{ number_format($commissionEarningsToday, 2) }}</td><td class="text-center">{{ config('affiliate.currency') }}{{ number_format($commissionEarningsThisMonth, 2)  }}</td></tr>
         </table>
     </div>
 
