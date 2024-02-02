@@ -6,10 +6,8 @@ use Illuminate\Support\ServiceProvider;
 use Grhone\LaravelAffiliateSystem\Services\AffiliateService;
 use Grhone\LaravelAffiliateSystem\Services\PaymentService;
 use Grhone\LaravelAffiliateSystem\Services\PayPalService;
-use Laravel\Cashier\Events\SubscriptionCreated;
-use Laravel\Cashier\Events\SubscriptionRenewed;
-use Grhone\LaravelAffiliateSystem\Listeners\HandleSubscriptionCreated;
-use Grhone\LaravelAffiliateSystem\Listeners\HandleSubscriptionRenewed;
+use Laravel\Cashier\Events\WebhookReceived;
+use Grhone\LaravelAffiliateSystem\Listeners\HandleCashierEvent;
 use Grhone\LaravelAffiliateSystem\Models\Affiliate;
 use Grhone\LaravelAffiliateSystem\Models\Referral;
 use Stripe\StripeClient;
@@ -37,13 +35,8 @@ class AffiliateServiceProvider extends ServiceProvider
         ]);
 
         Event::listen(
-            SubscriptionCreated::class,
-            [HandleSubscriptionCreated::class, 'handle']
-        );
-
-        Event::listen(
-            SubscriptionRenewed::class,
-            [HandleSubscriptionRenewed::class, 'handle']
+            WebhookReceived::class,
+            [HandleCashierEvent::class, 'handle']
         );
 
         // $this->app['events']->listen(SubscriptionCreated::class, function ($event) {
