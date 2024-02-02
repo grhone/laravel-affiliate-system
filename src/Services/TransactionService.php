@@ -4,32 +4,23 @@ namespace Grhone\LaravelAffiliateSystem\Services;
 
 use Grhone\LaravelAffiliateSystem\Models\Referral;
 use Grhone\LaravelAffiliateSystem\Models\ReferredTransaction;
-use Stripe\StripeClient;
+use App\Models\User;
 
 class TransactionService
 {
 
-    /**
-     * StripeClient instance.
-     */
-    protected $stripe;
-
     public function __construct()
     {
-        $this->stripe = new StripeClient(env('STRIPE_SECRET'));
     }
 
     /**
      * Extracts user information from a Stripe event payload.
      *
-     * @param array $data Array representation of the Stripe event payload.
+     * @param array $customerId String with the customer ID.
      * @return mixed The user associated with the transaction, or null if not found.
      */
-    public function getUserFromEvent($data)
+    public function getUserFromStripeID($customerId)
     {
-        // Implement logic to extract user ID from Stripe metadata and retrieve user
-        $customerId = $data['object']['customer'] ?? null;
-
         if ($customerId) {
             return User::where('stripe_id', $customerId)->first();
         }
