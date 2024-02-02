@@ -45,8 +45,8 @@ class PayPalService
         $payout->setSenderBatchHeader($senderBatchHeader);
 
         $amount = new Currency();
-        $amount->setValue($payoutData['amount']);
-        $amount->setCurrency('USD');
+        $amount->setValue($payoutData['amount']['value']);
+        $amount->setCurrency($payoutData['amount']['currency']);
 
         $senderItem = new PayoutItem();
         $senderItem->setRecipientType($payoutData['recipient_type'])
