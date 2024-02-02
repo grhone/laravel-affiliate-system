@@ -20,21 +20,6 @@ class TransactionService
     }
 
     /**
-     * Extracts the transaction amount from a Stripe event payload.
-     *
-     * @param array $data Array representation of the Stripe event payload.
-     * @return float The transaction amount in dollars.
-     */
-    public function getTransactionAmountFromEvent($data)
-    {
-        // Assuming $data contains the 'data' object with 'object' containing invoice details
-        $amountPaid = $data['object']['amount_paid'] ?? 0; // Amount is in cents
-
-        // Convert to dollars
-        return $amountPaid / 100;
-    }
-
-    /**
      * Extracts user information from a Stripe event payload.
      *
      * @param array $data Array representation of the Stripe event payload.

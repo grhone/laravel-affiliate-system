@@ -27,7 +27,7 @@ class HandleCashierEvent
 
             // Assuming you have a way to identify the user from the invoice or subscription ID
             $subscriptionId = $invoice['subscription'];
-            $user = $this->transactionService->getUserFromSubscriptionId($subscriptionId);
+            $user = $this->transactionService->getUserFromEvent($subscriptionId);
 
             // Handle the subscription event
             if ($user) {
