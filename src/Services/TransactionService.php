@@ -9,32 +9,57 @@ use Stripe\StripeClient;
 class TransactionService
 {
 
+    /**
+     * StripeClient instance.
+     */
+    protected $stripe;
+
     public function __construct()
     {
+        $this->stripe = new StripeClient(env('STRIPE_SECRET'));
     }
 
-    protected function getTransactionAmountFromSubscription($subscription)
+    /**
+     * Extracts the transaction amount from a Stripe event payload.
+     *
+     * @param array $data Array representation of the Stripe event payload.
+     * @return float The transaction amount in dollars.
+     */
+    public function getTransactionAmountFromEvent($data)
     {
-        // Initialize Stripe Client
-        $stripe = new StripeClient(env('STRIPE_SECRET'));
+        // Assuming $data contains the 'data' object with 'object' containing invoice details
+        $amountPaid = $data['object']['amount_paid'] ?? 0; // Amount is in cents
 
-        // Retrieve the Stripe subscription object
-        try {
-            $stripeSubscription = $stripe->subscriptions->retrieve($subscription->stripe_id);
-            
-            // Extract the transaction amount
-            // Stripe stores amounts in cents, so you may need to convert this to dollars or your desired currency unit
-            $transactionAmount = $stripeSubscription->plan->amount / 100; // Convert to dollars
-
-            return $transactionAmount;
-        } catch (\Exception $e) {
-            // Handle any exceptions, such as API errors
-            \Log::error("Stripe API error: " . $e->getMessage());
-            return 0;
-        }
+        // Convert to dollars
+        return $amountPaid / 100;
     }
 
-    protected function handleSubscriptionEvent($user, $transactionAmount)
+    /**
+     * Extracts user information from a Stripe event payload.
+     *
+     * @param array $data Array representation of the Stripe event payload.
+     * @return mixed The user associated with the transaction, or null if not found.
+     */
+    public function getUserFromEvent($data)
+    {
+        // Implement logic to extract user ID from Stripe metadata and retrieve user
+        $customerId = $data['object']['customer'] ?? null;
+
+        if ($customerId) {
+            return User::where('stripe_id', $customerId)->first();
+        }
+
+        return null;
+    }
+
+    /**
+     * Handles the creation of a referred transaction based on a Stripe event.
+     *
+     * @param mixed $user The user associated with the subscription event.
+     * @param float $transactionAmount The transaction amount in dollars.
+     * @return void
+     */
+    public function handleSubscriptionEvent($user, $transactionAmount)
     {
         // Check if the user has an existing referral
         $referral = Referral::where('referred_user_id', $user->id)->first();
@@ -46,11 +71,9 @@ class TransactionService
             // Create a new referred transaction
             $referredTransaction = new ReferredTransaction();
             $referredTransaction->referral_id = $referral->id;
-            $referredTransaction->referred_user_id = $user->id;
+            $referredTransaction->purchase_amount = $transactionAmount;
             $referredTransaction->earnings = $earnings;
             $referredTransaction->save();
-
-            // Additional logic as needed
         }
     }
 
