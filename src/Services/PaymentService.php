@@ -12,9 +12,9 @@ class PaymentService
 {
     protected $paypalService;
 
-    public function __construct(PayPalService $paypalService)
+    public function __construct()
     {
-        $this->paypalService = $paypalService;
+        $this->paypalService = new PayPalService();
     }
 
     public function processPaymentForAffiliate(Affiliate $affiliate)
@@ -54,6 +54,7 @@ class PaymentService
             } else {
                 // Handle failure in PayPal payout
                 // Log error details: $result['error']
+                \Log::error('Failed to pay affiliate.');
             }
         }
 
