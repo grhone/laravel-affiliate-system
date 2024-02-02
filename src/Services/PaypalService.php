@@ -5,6 +5,7 @@ namespace Grhone\LaravelAffiliateSystem\Services;
 use PayPal\Auth\OAuthTokenCredential;
 use PayPal\Rest\ApiContext;
 use PayPal\Api\Payout;
+use PayPal\Api\Currency;
 use PayPal\Api\PayoutSenderBatchHeader;
 use PayPal\Api\PayoutItem;
 use PayPal\Exception\PayPalConnectionException;
