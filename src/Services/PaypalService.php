@@ -44,7 +44,12 @@ class PayPalService
         $payouts->setSenderBatchHeader($senderBatchHeader);
 
         foreach ($payoutData as $data) {
-            $senderItem = new PayoutItem($data);
+            $senderItem = new PayoutItem();
+            $senderItem->setRecipientType($data['recipient_type'])
+                       ->setReceiver($data['receiver'])
+                       ->setAmount(new Currency(json_encode($data['amount'])))
+                       ->setNote($data['note'])
+                       ->setSenderItemId($data['sender_item_id']);
             $payouts->addItem($senderItem);
         }
 

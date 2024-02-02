@@ -25,7 +25,7 @@ class PaymentService
             // Prepare payout data for PayPal
             $payoutData = [
                 'recipient_type' => 'EMAIL',
-                'receiver' => $affiliate->user->email, // Assuming the affiliate's PayPal email is the same as the user email
+                'receiver' => $affiliate->paypal_email, // Assuming the affiliate's PayPal email is the same as the user email
                 'amount' => [
                     'value' => $payoutAmount,
                     'currency' => 'USD' // Or the currency of your choice
