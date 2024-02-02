@@ -44,13 +44,7 @@ return [
     'paypal' => [
         'client_id' => env('PAYPAL_CLIENT_ID', 'your-client-id'),
         'secret' => env('PAYPAL_SECRET', 'your-secret'),
-        'settings' => [
-            'mode' => env('PAYPAL_MODE', 'sandbox'), // Can be 'sandbox' or 'live'
-            'http.ConnectionTimeOut' => 30,
-            'log.LogEnabled' => true,
-            'log.FileName' => storage_path('logs/paypal.log'),
-            'log.LogLevel' => 'ERROR' // Can be 'FINE', 'INFO', 'WARN', or 'ERROR'
-        ],
+        'mode' => env('PAYPAL_MODE', 'sandbox'), // Can be 'sandbox' or 'live'
     ],
 
     /*

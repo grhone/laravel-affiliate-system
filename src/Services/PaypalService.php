@@ -2,31 +2,47 @@
 
 namespace Grhone\LaravelAffiliateSystem\Services;
 
-use PayPal\Auth\OAuthTokenCredential;
-use PayPal\Rest\ApiContext;
-use PayPal\Api\Payout;
-use PayPal\Api\Currency;
-use PayPal\Api\PayoutSenderBatchHeader;
-use PayPal\Api\PayoutItem;
-use PayPal\Exception\PayPalConnectionException;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Http\Client\Response;
 
 class PayPalService
 {
-    /**
-     * PayPal API Context
-     */
-    protected $apiContext;
+    protected string $clientId;
+    protected string $secret;
+    protected string $apiBaseUrl;
 
     public function __construct()
-    {
-        $this->apiContext = new ApiContext(
-            new OAuthTokenCredential(
-                config('affiliate.paypal.client_id'),
-                config('affiliate.paypal.secret')
-            )
-        );
+{
+    $this->clientId = config('affiliate.paypal.client_id');
+    $this->secret = config('affiliate.paypal.secret');
+    
+    $mode = config('affiliate.paypal.mode', 'sandbox'); // Default to sandbox if not set
+    if ($mode === 'live') {
+        $this->apiBaseUrl = 'https://api.paypal.com';
+    } else {
+        $this->apiBaseUrl = 'https://api.sandbox.paypal.com';
+    }
+}
 
-        $this->apiContext->setConfig(config('affiliate.paypal.settings'));
+
+    /**
+     * Get a new access token from PayPal.
+     *
+     * @return string|null
+     */
+    protected function getAccessToken(): ?string
+    {
+        $response = Http::withBasicAuth($this->clientId, $this->secret)
+                        ->asForm()
+                        ->post("{$this->apiBaseUrl}/v1/oauth2/token", [
+                            'grant_type' => 'client_credentials',
+                        ]);
+
+        if ($response->successful()) {
+            return $response->json('access_token');
+        }
+
+        return null;
     }
 
     /**
@@ -35,34 +51,39 @@ class PayPalService
      * @param array $payoutData
      * @return array
      */
-    public function createPayout($payoutData)
+    public function createPayout(array $payoutData): array
     {
-        $senderBatchHeader = new PayoutSenderBatchHeader();
-        $senderBatchHeader->setSenderBatchId(uniqid())
-                          ->setEmailSubject("You have an affiliate payout!");
+        $accessToken = $this->getAccessToken();
 
-        $payout = new Payout();
-        $payout->setSenderBatchHeader($senderBatchHeader);
+        if (!$accessToken) {
+            return ['success' => false, 'error' => 'Unable to retrieve access token'];
+        }
 
-        $amount = new Currency();
-        $amount->setValue($payoutData['amount']['value']);
-        $amount->setCurrency($payoutData['amount']['currency']);
+        $payoutResponse = Http::withToken($accessToken)
+                              ->withHeaders(['Content-Type' => 'application/json'])
+                              ->post("{$this->apiBaseUrl}/v1/payments/payouts", [
+                                  'sender_batch_header' => [
+                                      'sender_batch_id' => uniqid(),
+                                      'email_subject' => 'You have an affiliate payout!',
+                                  ],
+                                  'items' => [
+                                      [
+                                          'recipient_type' => $payoutData['recipient_type'],
+                                          'receiver' => $payoutData['receiver'],
+                                          'note' => $payoutData['note'],
+                                          'sender_item_id' => $payoutData['sender_item_id'],
+                                          'amount' => [
+                                              'value' => $payoutData['amount']['value'],
+                                              'currency' => $payoutData['amount']['currency'],
+                                          ],
+                                      ],
+                                  ],
+                              ]);
 
-        $senderItem = new PayoutItem();
-        $senderItem->setRecipientType($payoutData['recipient_type'])
-                    ->setReceiver($payoutData['receiver'])
-                    ->setAmount($amount)
-                    ->setNote($payoutData['note'])
-                    ->setSenderItemId($payoutData['sender_item_id']);
-        $payout->addItem($senderItem);
-
-        try {
-            $payout->create(null, $this->apiContext);
-            return ['success' => true, 'details' => $payout];
-        } catch (PayPalConnectionException $ex) {
-            return ['success' => false, 'error' => json_decode($ex->getData())];
+        if ($payoutResponse->successful()) {
+            return ['success' => true, 'details' => $payoutResponse->json()];
+        } else {
+            return ['success' => false, 'error' => $payoutResponse->body()];
         }
     }
-
-    // Additional methods for handling PayPal responses, errors, etc.
 }
