@@ -36,27 +36,23 @@ class PayPalService
      */
     public function createPayout($payoutData)
     {
-        $payouts = new Payout();
         $senderBatchHeader = new PayoutSenderBatchHeader();
-        // Set sender batch header properties like email subject, etc.
-        // ...
+        $senderBatchHeader->setSenderBatchId(uniqid())
+                          ->setEmailSubject("You have an affiliate payout!");
 
+        $payouts = new Payout();
         $payouts->setSenderBatchHeader($senderBatchHeader);
 
         foreach ($payoutData as $data) {
-            $senderItem = new PayoutItem();
-            // Set payout item details like recipient type, email, amount, currency, etc.
-            // ...
-
+            $senderItem = new PayoutItem($data);
             $payouts->addItem($senderItem);
         }
 
         try {
-            $payouts->create($this->apiContext);
+            $payouts->create(null, $this->apiContext);
             return ['success' => true, 'details' => $payouts];
         } catch (PayPalConnectionException $ex) {
-            // Handle API error
-            return ['success' => false, 'error' => $ex->getData()];
+            return ['success' => false, 'error' => json_decode($ex->getData())];
         }
     }
 
