@@ -40,22 +40,20 @@ class PayPalService
         $senderBatchHeader->setSenderBatchId(uniqid())
                           ->setEmailSubject("You have an affiliate payout!");
 
-        $payouts = new Payout();
-        $payouts->setSenderBatchHeader($senderBatchHeader);
+        $payout = new Payout();
+        $payout->setSenderBatchHeader($senderBatchHeader);
 
-        foreach ($payoutData as $data) {
-            $senderItem = new PayoutItem();
-            $senderItem->setRecipientType($data['recipient_type'])
-                       ->setReceiver($data['receiver'])
-                       ->setAmount(new Currency(json_encode($data['amount'])))
-                       ->setNote($data['note'])
-                       ->setSenderItemId($data['sender_item_id']);
-            $payouts->addItem($senderItem);
-        }
+        $senderItem = new PayoutItem();
+        $senderItem->setRecipientType($payoutData['recipient_type'])
+                    ->setReceiver($payoutData['receiver'])
+                    ->setAmount(new Currency(json_encode($payoutData['amount'])))
+                    ->setNote($payoutData['note'])
+                    ->setSenderItemId($payoutData['sender_item_id']);
+        $payout->addItem($senderItem);
 
         try {
-            $payouts->create(null, $this->apiContext);
-            return ['success' => true, 'details' => $payouts];
+            $payout->create(null, $this->apiContext);
+            return ['success' => true, 'details' => $payout];
         } catch (PayPalConnectionException $ex) {
             return ['success' => false, 'error' => json_decode($ex->getData())];
         }
