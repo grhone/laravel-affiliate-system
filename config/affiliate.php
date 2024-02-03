@@ -61,4 +61,10 @@ return [
      */
     'currency' => '$', // Used to display the sales and commissions. Assumes that the entire project is in the same currency.
 
+    /*
+     * Admin email parameter settings
+     * 
+     */
+    'admin_email' => env('ADMIN_EMAIL', ''), // Used to send emails for notifications
+
 ];
