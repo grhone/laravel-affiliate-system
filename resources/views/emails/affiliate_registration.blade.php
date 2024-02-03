@@ -7,5 +7,6 @@
 
     When your account has been approved, you'll recieve another email with further instructions.
 
-    Best Regards,<br>{{ config('app.name') }}
+    Best Regards,<br>
+    {{ config('app.name') }}
 </x-mail::message>

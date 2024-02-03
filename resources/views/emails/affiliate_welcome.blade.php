@@ -8,6 +8,7 @@
     You can visit our website to get your affiliate code.
 
     Thank you for being a valued member of our network.
-    
-    Best Regards,<br>{{ config('app.name') }}
+
+    Best Regards,<br>
+    {{ config('app.name') }}
 </x-mail::message>
