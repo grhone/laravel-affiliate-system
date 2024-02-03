@@ -49,27 +49,27 @@ class AffiliateServiceProvider extends ServiceProvider
 
         Event::listen(
             AffiliateRegistered::class,
-            SendAffiliateRegistrationMail::class,
+            [SendAffiliateRegistrationMail::class, 'handle']
         );
 
         Event::listen(
             AffiliateApproved::class,
-            SendAffiliatewelcomeMail::class,
+            [SendAffiliatewelcomeMail::class, 'handle']
         );
         
         Event::listen(
             ReferralMade::class,
-            SendReferralMadeMail::class,
+            [SendReferralMadeMail::class, 'handle']
         );
         
         Event::listen(
             UpdatedPaymentStatus::class,
-            SendPaymentStatusMail::class,
+            [SendPaymentStatusMail::class, 'handle']
         );
         
         Event::listen(
             TransactionMade::class,
-            SendTransactionMadeMail::class,
+            [SendTransactionMadeMail::class, 'handle']
         );
 
     }
