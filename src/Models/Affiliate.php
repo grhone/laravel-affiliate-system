@@ -141,7 +141,7 @@ class Affiliate extends Model
 
         // If there is a last payment date, consider transactions after that date
         if ($lastPaymentDate) {
-            $transactionsQuery->where('created_at', '>', $lastPaymentDate);
+            $transactionsQuery->where('referred_transactions.created_at', '>', $lastPaymentDate);
         }
 
         $newTransactions = $transactionsQuery->get();
