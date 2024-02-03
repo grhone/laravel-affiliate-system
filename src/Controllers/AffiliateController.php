@@ -8,6 +8,7 @@ use Grhone\LaravelAffiliateSystem\Http\Requests\UpdateAffiliateRequest;
 use Grhone\LaravelAffiliateSystem\Models\Affiliate;
 use Grhone\LaravelAffiliateSystem\Models\AffiliateSetting;
 use Grhone\LaravelAffiliateSystem\Services\AffiliateService;
+use Grhone\LaravelAffiliateSystem\Events\AffiliateRegistered;
 use Illuminate\Http\Request;
 use Exception;
 use Auth;
@@ -126,6 +127,9 @@ class AffiliateController extends Controller
     {
         try {
             $affiliate = $this->affiliateService->registerAffiliate($request->validated());
+
+            AffiliateRegistered::dispatch($affiliate);
+            
             return redirect()->route('affiliate.dashboard')->with('success', 'Affiliate created successfully.');
         } catch (Exception $e) {
             return back()->withErrors($e->getMessage());

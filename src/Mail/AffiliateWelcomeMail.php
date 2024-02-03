@@ -7,7 +7,7 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 use Grhone\LaravelAffiliateSystem\Models\Affiliate;
 
-class AffiliateWelcomeEmail extends Mailable
+class AffiliateWelcomeMail extends Mailable
 {
     use Queueable, SerializesModels;
 
@@ -20,7 +20,10 @@ class AffiliateWelcomeEmail extends Mailable
 
     public function build()
     {
-        return $this->view('laravel-affiliate-system::emails.affiliate_welcome')
-                    ->subject('Welcome to Our Affiliate Program!');
+        return $this->markdown('laravel-affiliate-system::emails.affiliate_welcome')
+                    ->subject( config('app.name') . ' - Welcome to Our Affiliate Program!')
+                    ->with([
+                        'affiliate' => $this->affiliate,
+                    ]);
     }
 }

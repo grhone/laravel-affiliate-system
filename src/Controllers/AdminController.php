@@ -5,6 +5,7 @@ namespace Grhone\LaravelAffiliateSystem\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Grhone\LaravelAffiliateSystem\Models\Affiliate;
+use Grhone\LaravelAffiliateSystem\Events\AffiliateApproved;
 
 class AdminController extends Controller
 {
@@ -82,6 +83,8 @@ class AdminController extends Controller
             $affiliate = Affiliate::findOrFail($id);
             $affiliate->approved = true;
             $affiliate->save();
+
+            AffiliateApproved::dispatch($affiliate);
 
             return redirect()->route('admin.manage_affiliates')
                             ->with('success', 'Affiliate approved successfully.');

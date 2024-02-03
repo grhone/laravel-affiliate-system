@@ -48,7 +48,6 @@ class PaymentService
 
                 // Additional logic like updating affiliate's balance, sending notifications, etc.
 
-                Mail::to($affiliate->user->email)->send(new PaymentSentMail($affiliate->user, $payoutAmount));
 
 
                 return $payment;
@@ -64,13 +63,17 @@ class PaymentService
 
     public function updatePaymentStatus($eventData, $status)
     {
-        $transactionId = $eventData['id'];
+        $transactionId = $eventData['batch_header']['payout_batch_id'];
         $payment = Payment::where('paypal_transaction_id', $transactionId)->first();
 
         if ($payment) {
             $payment->payout_status = $status;
             $payment->save();
         }
+
+        UpdatedPaymentStatus::dispatch($payment);
+        //Mail::to($payment->affiliate->user->email)->send(new PaymentStatusMail($payment->affiliate->user, $payoutAmount, $status));
+
     }
 
     /**

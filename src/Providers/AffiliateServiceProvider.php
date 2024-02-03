@@ -7,7 +7,15 @@ use Grhone\LaravelAffiliateSystem\Services\AffiliateService;
 use Grhone\LaravelAffiliateSystem\Services\PaymentService;
 use Grhone\LaravelAffiliateSystem\Services\PayPalService;
 use Laravel\Cashier\Events\WebhookReceived;
+use Grhone\LaravelAffiliateSystem\Events\AffiliateApproved;
+use Grhone\LaravelAffiliateSystem\Events\AffiliateRegistered;
+use Grhone\LaravelAffiliateSystem\Events\ReferralMade;
+use Grhone\LaravelAffiliateSystem\Events\UpdatedPaymentStatus;
 use Grhone\LaravelAffiliateSystem\Listeners\HandleCashierEvent;
+use Grhone\LaravelAffiliateSystem\Listeners\SendAffiliateRegistrationMail;
+use Grhone\LaravelAffiliateSystem\Listeners\SendAffiliateWelcomeMail;
+use Grhone\LaravelAffiliateSystem\Listeners\SendReferralMadeMail;
+use Grhone\LaravelAffiliateSystem\Listeners\SendPaymentStatusMail;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Event;
 
@@ -35,6 +43,26 @@ class AffiliateServiceProvider extends ServiceProvider
         Event::listen(
             WebhookReceived::class,
             [HandleCashierEvent::class, 'handle']
+        );
+
+        Event::listen(
+            AffiliateRegistered::class,
+            SendAffiliateRegistrationMail::class,
+        );
+
+        Event::listen(
+            AffiliateApproved::class,
+            SendAffiliatewelcomeMail::class,
+        );
+        
+        Event::listen(
+            ReferralMade::class,
+            SendReferralMadeMail::class,
+        );
+        
+        Event::listen(
+            UpdatedPaymentStatus::class,
+            SendPaymentStatusMail::class,
         );
 
     }

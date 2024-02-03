@@ -5,9 +5,9 @@ namespace Grhone\LaravelAffiliateSystem\Listeners;
 use Grhone\LaravelAffiliateSystem\Events\AffiliateRegistered;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Support\Facades\Mail;
-use Grhone\LaravelAffiliateSystem\Mail\AffiliateWelcomeEmail;
+use Grhone\LaravelAffiliateSystem\Mail\AffiliateRegistrationMail;
 
-class SendAffiliateWelcomeEmail implements ShouldQueue
+class SendAffiliateRegistrationMail implements ShouldQueue
 {
     /**
      * Handle the event.
@@ -20,6 +20,6 @@ class SendAffiliateWelcomeEmail implements ShouldQueue
         $affiliate = $event->affiliate;
         
         // Sending the welcome email to the affiliate's email
-        Mail::to($affiliate->user->email)->send(new AffiliateWelcomeEmail($affiliate));
+        Mail::to($affiliate->user->email)->send(new AffiliateRegistrationMail($affiliate));
     }
 }
