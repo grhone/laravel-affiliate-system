@@ -28,7 +28,7 @@ class AffiliateWelcomeMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            from: new Address(config('affiliate.admin_email'), config('app.name')),
+            from: new Address(config('mail.from.address'), config('mail.from.name')),
             subject: 'Welcome to Our Affiliate Program!',
         );
     }
