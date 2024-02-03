@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Route;
 use Grhone\LaravelAffiliateSystem\Controllers\AffiliateController;
 use Grhone\LaravelAffiliateSystem\Controllers\AdminController;
 use Grhone\LaravelAffiliateSystem\Controllers\PaymentController;
-use Grhone\LaravelAffiliateSystem\Controllers\TrackingController;
+use Grhone\LaravelAffiliateSystem\Controllers\PaypalWebhookController;
 
 /*
 |--------------------------------------------------------------------------
@@ -51,15 +51,9 @@ Route::prefix('admin')->name('admin.')->middleware(config('affiliate.middleware.
     });
 });
 
-
-
 /*
 |--------------------------------------------------------------------------
-| Tracking Routes
+| PayPal Webhook
 |--------------------------------------------------------------------------
 */
-Route::prefix('tracking')->name('tracking.')->group(function () {
-    Route::get('/track-click', [TrackingController::class, 'trackClick'])->name('track.click');
-    Route::post('/track-conversion', [TrackingController::class, 'trackConversion'])->name('track.conversion');
-    // Additional tracking-specific routes...
-});
+Route::post('/api/paypal/webhook', [PaypalWebhookController::class , 'handle']);

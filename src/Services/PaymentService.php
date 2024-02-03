@@ -19,7 +19,7 @@ class PaymentService
 
     public function processPaymentForAffiliate(Affiliate $affiliate)
     {
-        $payoutAmount = $this->calculatePayoutForAffiliate($affiliate);
+        $payoutAmount = number_format($this->calculatePayoutForAffiliate($affiliate), 2);
 
         if ($payoutAmount > 0) {
             // Prepare payout data for PayPal
@@ -42,7 +42,8 @@ class PaymentService
                 $payment->affiliate_id = $affiliate->id;
                 $payment->amount = $payoutAmount;
                 $payment->paid_at = now();
-                $payment->transaction_id = $result['details']->batch_header->payout_batch_id; // Storing PayPal transaction ID
+                $payment->paypal_transaction_id = $result['details']['batch_header']['payout_batch_id']; // Storing PayPal transaction ID
+                $payment->payout_status = $result['details']['batch_header']['batch_status'];
                 $payment->save();
 
                 // Additional logic like updating affiliate's balance, sending notifications, etc.
@@ -59,6 +60,17 @@ class PaymentService
         }
 
         return null;
+    }
+
+    public function updatePaymentStatus($eventData, $status)
+    {
+        $transactionId = $eventData['id'];
+        $payment = Payment::where('paypal_transaction_id', $transactionId)->first();
+
+        if ($payment) {
+            $payment->payout_status = $status;
+            $payment->save();
+        }
     }
 
     /**

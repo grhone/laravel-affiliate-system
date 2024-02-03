@@ -19,7 +19,6 @@ return new class extends Migration
             $table->decimal('amount', 10, 2);
             $table->string('paypal_transaction_id')->nullable(); // PayPal transaction ID
             $table->string('payout_status')->nullable(); // Status of the payout
-            $table->text('paypal_response')->nullable(); // Stores the PayPal response data
             $table->timestamp('paid_at')->nullable();
             $table->timestamps();
             $table->softDeletes();
