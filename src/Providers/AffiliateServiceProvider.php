@@ -11,11 +11,13 @@ use Grhone\LaravelAffiliateSystem\Events\AffiliateApproved;
 use Grhone\LaravelAffiliateSystem\Events\AffiliateRegistered;
 use Grhone\LaravelAffiliateSystem\Events\ReferralMade;
 use Grhone\LaravelAffiliateSystem\Events\UpdatedPaymentStatus;
+use Grhone\LaravelAffiliateSystem\Events\TransactionMade;
 use Grhone\LaravelAffiliateSystem\Listeners\HandleCashierEvent;
 use Grhone\LaravelAffiliateSystem\Listeners\SendAffiliateRegistrationMail;
 use Grhone\LaravelAffiliateSystem\Listeners\SendAffiliateWelcomeMail;
 use Grhone\LaravelAffiliateSystem\Listeners\SendReferralMadeMail;
 use Grhone\LaravelAffiliateSystem\Listeners\SendPaymentStatusMail;
+use Grhone\LaravelAffiliateSystem\Listeners\SendTransactionMadeMail;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Event;
 
@@ -63,6 +65,11 @@ class AffiliateServiceProvider extends ServiceProvider
         Event::listen(
             UpdatedPaymentStatus::class,
             SendPaymentStatusMail::class,
+        );
+        
+        Event::listen(
+            TransactionMade::class,
+            SendTransactionMadeMail::class,
         );
 
     }

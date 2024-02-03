@@ -1,7 +1,7 @@
 <x-mail::message>
     # Thank You for Your Business
 
-    <p>Hello {{ $user->name }},</p>
+    <p>Hello {{ $affiliate->user->first_name }},</p>
     <p>Your payment status has been updated.</p>
 
     <x-mail::panel>

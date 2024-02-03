@@ -12,12 +12,12 @@ class PaymentStatusMail extends Mailable
     use Queueable, SerializesModels;
 
     public $amount;
-    public $user;
+    public $affiliate;
     public $status;
 
     public function __construct($payment)
     {
-        $this->user = $payment->user();
+        $this->affiliate = $payment->affiliate;
         $this->amount = $payment->amount;
         $this->status = $payment->payout_status;
     }
@@ -28,7 +28,7 @@ class PaymentStatusMail extends Mailable
                     ->subject( config('app.name') . ' - Affiliate Payment Status - '.ucfirst($this->status) )
                     ->with([
                         'amount' => $this->amount,
-                        'user' => $this->user,
+                        'affiliate' => $this->affiliate,
                         'status' => $this->status
                     ]);
     }

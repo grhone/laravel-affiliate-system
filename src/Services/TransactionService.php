@@ -5,6 +5,7 @@ namespace Grhone\LaravelAffiliateSystem\Services;
 use Grhone\LaravelAffiliateSystem\Models\Referral;
 use Grhone\LaravelAffiliateSystem\Models\ReferredTransaction;
 use App\Models\User;
+use Grhone\LaravelAffiliateSystem\Events\TransactionMade;
 
 class TransactionService
 {
@@ -51,6 +52,8 @@ class TransactionService
             $referredTransaction->type = $type;
             $referredTransaction->earnings = $earnings;
             $referredTransaction->save();
+
+            TransactionMade::dispatch($referredTransaction);
         }
     }
 
