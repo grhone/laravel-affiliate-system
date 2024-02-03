@@ -1,8 +1,11 @@
 <x-mail::message>
     # Affiliate Registration
 
-    <p>Hello {{ $affiliate->user->first_name }},</p>
-    <p>Your affiliate account has been been created.</p>
-    <p>When your account has been approved, you'll recieve another email with further instructions.</p>
-    <p>Best Regards,<br>{{ config('app.name') }}</p>
+    Hello {{ $affiliate->first_name }},
+
+    Your affiliate account has been been created.
+
+    When your account has been approved, you'll recieve another email with further instructions.
+
+    Best Regards,<br>{{ config('app.name') }}
 </x-mail::message>
