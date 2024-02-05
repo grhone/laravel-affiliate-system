@@ -2,6 +2,7 @@
 
 namespace Grhone\LaravelAffiliateSystem\Controllers;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Grhone\LaravelAffiliateSystem\Services\PaymentService;
 
