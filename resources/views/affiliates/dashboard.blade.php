@@ -45,11 +45,18 @@
             <tr><td>Sales/Transactions</td><td class="text-center">{{ $salesToday }}</td><td class="text-center">{{ $salesThisMonth }}</td></tr>
             <tr><td>Transaction Value</td><td class="text-center">{{ config('affiliate.currency') }}{{ number_format($saleValueToday, 2) }}</td><td class="text-center">{{ config('affiliate.currency') }}{{ number_format($saleValueThisMonth, 2) }}</td></tr>
             <tr><td>Refunds</td><td class="text-center">{{ config('affiliate.currency') }}{{ number_format($refundValueToday, 2) }}</td><td class="text-center">{{ config('affiliate.currency') }}{{ number_format($refundsValueThisMonth, 2) }}</td></tr>
+            <tr><td>Chargebacks</td><td class="text-center">{{ config('affiliate.currency') }}{{ number_format($chargebacksToday, 2) }}</td><td class="text-center">{{ config('affiliate.currency') }}{{ number_format($chargebacksThisMonth, 2) }}</td></tr>
             <tr><td>Commission/Earnings</td><td class="text-center">{{ config('affiliate.currency') }}{{ number_format($commissionEarningsToday, 2) }}</td><td class="text-center">{{ config('affiliate.currency') }}{{ number_format($commissionEarningsThisMonth, 2)  }}</td></tr>
         </table>
     </div>
 
     @endif
+
+    <div class="mb-6">
+        <a href="{{ route('affiliate.reports') }}" class="text-blue-600 hover:text-blue-800">
+            Generate Custom Reports
+        </a>
+    </div>
 
     <script>
         document.addEventListener("DOMContentLoaded", function() {

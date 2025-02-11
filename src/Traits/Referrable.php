@@ -30,8 +30,6 @@ trait Referrable
                     }
 
                     $referral->save();
-
-                    // Additional logic like updating affiliate earnings, sending notifications, etc.
                 }
             }
         });

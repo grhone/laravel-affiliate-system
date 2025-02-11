@@ -18,6 +18,7 @@ Route::prefix('affiliate')->name('affiliate.')->middleware(config('affiliate.mid
     Route::get('/edit-profile', [AffiliateController::class, 'edit'])->name('edit');
     Route::put('/edit-profile', [AffiliateController::class, 'update'])->name('update');
     Route::get('/reports', [AffiliateController::class, 'reports'])->name('reports');
+    Route::get('/reports/generate', [AffiliateController::class, 'generateReport'])->name('reports.generate');
     Route::get('/settings', [AffiliateController::class, 'settings'])->name('settings');
     Route::put('/settings', [AffiliateController::class, 'updateSettings'])->name('updateSettings');
     });
@@ -37,7 +38,8 @@ Route::prefix('admin')->name('admin.')->middleware(config('affiliate.middleware.
     Route::delete('/affiliate/{id}', [AdminController::class, 'destroy'])->name('affiliate.destroy');    
     Route::post('/approve-affiliate/{id}', [AdminController::class, 'approveAffiliate'])->name('approve.affiliate');
     Route::post('/deny-affiliate/{id}', [AdminController::class, 'denyAffiliate'])->name('deny.affiliate');
-    // Additional admin-specific routes...
+    Route::get('/reports', [AdminController::class, 'reports'])->name('affiliates.reports');
+    Route::get('/reports/generate', [AdminController::class, 'generateReport'])->name('affiliates.reports.generate');
 
     /*
     |--------------------------------------------------------------------------

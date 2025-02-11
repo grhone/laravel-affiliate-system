@@ -35,8 +35,8 @@ class AffiliateService
         $affiliate->fill($data);
         $affiliate->save();
 
-        // Additional logic (if any) after an affiliate is registered.
-        // For example, sending a welcome email, initializing settings, etc.
+        // Dispatch an event after affiliate registration
+        AffiliateRegistered::dispatch($affiliate);
 
         return $affiliate;
     }

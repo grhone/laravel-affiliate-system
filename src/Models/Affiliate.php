@@ -47,8 +47,6 @@ class Affiliate extends Model
         // Other casts as necessary
     ];
 
-    // ... Rest of the methods remain unchanged
-
     /**
      * User relationship.
      *
@@ -90,7 +88,6 @@ class Affiliate extends Model
             'id'            // Local key on Referral table
         );
     }
-
 
     /**
      * Payments relationship.
@@ -152,8 +149,6 @@ class Affiliate extends Model
 
         return $totalUnpaidEarnings;
     }
-
-
 
     /**
      * Generate a unique referral code for the affiliate.

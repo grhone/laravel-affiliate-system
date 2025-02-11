@@ -13,11 +13,22 @@ class ReferralMadeMail extends Mailable
 
     public $referral;
 
+    /**
+     * Create a new message instance.
+     * 
+     * @param Referral $referral
+     * @return void
+     */
     public function __construct(Referral $referral)
     {
         $this->referral = $referral;
     }
 
+    /**
+     * Build the message.
+     *
+     * @return $this
+     */
     public function build()
     {
         return $this->markdown('laravel-affiliate-system::emails.referral_made')

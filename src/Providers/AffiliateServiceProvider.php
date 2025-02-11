@@ -47,30 +47,69 @@ class AffiliateServiceProvider extends ServiceProvider
             [HandleCashierEvent::class, 'handle']
         );
 
+        // Listen for events from the application
         Event::listen(
             AffiliateRegistered::class,
             [SendAffiliateRegistrationMail::class, 'handle']
         );
 
+        // Listen for events from the application
         Event::listen(
             AffiliateApproved::class,
             [SendAffiliatewelcomeMail::class, 'handle']
         );
         
+        // Listen for events from the application
         Event::listen(
             ReferralMade::class,
             [SendReferralMadeMail::class, 'handle']
         );
         
+        // Listen for events from the application
         Event::listen(
             UpdatedPaymentStatus::class,
             [SendPaymentStatusMail::class, 'handle']
         );
         
+        // Listen for events from the application
         Event::listen(
             TransactionMade::class,
             [SendTransactionMadeMail::class, 'handle']
         );
+
+        // Listen for events from the application
+        Event::listen(
+            AffiliateReportEvent::class,
+            [SendAffiliateReportMail::class, 'handle']
+        );
+
+        // Send affiliate report email
+        $this->callAfterResolving(Schedule::class, function (Schedule $schedule) {
+    
+            $schedule->call(function () {
+                // Get all approved affiliates
+                $affiliates = \Grhone\LaravelAffiliateSystem\Models\Affiliate::approved()->get();
+                
+                foreach ($affiliates as $affiliate) {
+                    // Get the number of sales and earnings for the affiliate in the last month
+                    $sales = $affiliate->referredTransactions()
+                        ->whereMonth('created_at', now()->subMonth()->month)
+                        ->whereYear('created_at', now()->subMonth()->year)
+                        ->count();
+
+                    $earnings = $affiliate->referredTransactions()
+                        ->whereMonth('created_at', now()->subMonth()->month)
+                        ->whereYear('created_at', now()->subMonth()->year)
+                        ->sum('earnings');
+
+                    // Dispatch the event with the affiliate's sales and earnings data
+                    event(new \Grhone\LaravelAffiliateSystem\Events\AffiliateReportEvent(
+                        $affiliate,
+                        ['sales' => $sales, 'earnings' => $earnings]
+                    ));
+                }
+            })->monthlyOn(1, '00:00'); // Run this task on the first day of every month at midnight
+        });
 
     }
 
@@ -86,6 +125,7 @@ class AffiliateServiceProvider extends ServiceProvider
             return new AffiliateService();
         });
 
+        // Register PaymentService
         $this->app->singleton(PaymentService::class, function ($app) {
             return new PaymentService();
         });
@@ -101,8 +141,14 @@ class AffiliateServiceProvider extends ServiceProvider
         );
     }
 
+    /**
+     * Load the routes for the application.
+     *
+     * @return void
+     */
     protected function loadRoutesWithMiddleware()
     {
+        // Load routes with middleware from the package's directory.
         Route::group(['middleware' => config('affiliate.middleware.regular', ['web'])], function () {
             $this->loadRoutesFrom(__DIR__.'/../../routes/web.php');
         });

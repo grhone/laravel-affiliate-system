@@ -19,7 +19,7 @@ class AffiliatePolicy
     public function viewAny(User $user)
     {
         // Authorization logic to view any affiliates
-        return true; // Update with actual logic
+        return true; // TODO: Update with actual logic
     }
 
     /**
@@ -32,7 +32,7 @@ class AffiliatePolicy
     public function view(User $user, Affiliate $affiliate)
     {
         // Authorization logic to view a specific affiliate
-        return true; // Update with actual logic
+        return true; // TODO: Update with actual logic
     }
 
     /**
@@ -44,7 +44,7 @@ class AffiliatePolicy
     public function create(User $user)
     {
         // Authorization logic to create an affiliate
-        return true; // Update with actual logic
+        return true; // TODO: Update with actual logic
     }
 
     /**
@@ -57,7 +57,7 @@ class AffiliatePolicy
     public function update(User $user, Affiliate $affiliate)
     {
         // Authorization logic to update a specific affiliate
-        return true; // Update with actual logic
+        return true; // TODO: Update with actual logic
     }
 
     /**
@@ -70,6 +70,6 @@ class AffiliatePolicy
     public function delete(User $user, Affiliate $affiliate)
     {
         // Authorization logic to delete a specific affiliate
-        return true; // Update with actual logic
+        return true; // TODO: Update with actual logic
     }
 }

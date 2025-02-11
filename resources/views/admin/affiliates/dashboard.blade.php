@@ -28,6 +28,7 @@
             </a>
 
             {{-- Additional widgets can be added here --}}
+            <!-- TODO: ADD LINK TO REPORTS -->
         </div>
     </div> 
 </x-admin-layout>

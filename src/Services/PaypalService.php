@@ -11,19 +11,23 @@ class PayPalService
     protected string $secret;
     protected string $apiBaseUrl;
 
+    /**
+     * Constructor to initialize the PayPal service.
+     * 
+     * @return void
+     */
     public function __construct()
-{
-    $this->clientId = config('affiliate.paypal.client_id');
-    $this->secret = config('affiliate.paypal.secret');
-    
-    $mode = config('affiliate.paypal.mode', 'sandbox'); // Default to sandbox if not set
-    if ($mode === 'live') {
-        $this->apiBaseUrl = 'https://api.paypal.com';
-    } else {
-        $this->apiBaseUrl = 'https://api.sandbox.paypal.com';
+    {
+        $this->clientId = config('affiliate.paypal.client_id');
+        $this->secret = config('affiliate.paypal.secret');
+        
+        $mode = config('affiliate.paypal.mode', 'sandbox'); // Default to sandbox if not set
+        if ($mode === 'live') {
+            $this->apiBaseUrl = 'https://api.paypal.com';
+        } else {
+            $this->apiBaseUrl = 'https://api.sandbox.paypal.com';
+        }
     }
-}
-
 
     /**
      * Get a new access token from PayPal.

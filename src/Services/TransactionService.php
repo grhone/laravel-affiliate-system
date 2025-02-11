@@ -10,10 +10,6 @@ use Grhone\LaravelAffiliateSystem\Events\TransactionMade;
 class TransactionService
 {
 
-    public function __construct()
-    {
-    }
-
     /**
      * Extracts user information from a Stripe event payload.
      *
@@ -45,6 +41,11 @@ class TransactionService
             // Calculate earnings for this referral based on the transaction amount
             $earnings = $this->calculateEarningsForReferral($referral, $transactionAmount);
 
+            // For chargebacks, reverse the earnings
+            if ($type === 'chargeback') {
+                $earnings = -abs($earnings); // Force negative value
+            }
+
             // Create a new referred transaction
             $referredTransaction = new ReferredTransaction();
             $referredTransaction->referral_id = $referral->id;
@@ -53,13 +54,24 @@ class TransactionService
             $referredTransaction->earnings = $earnings;
             $referredTransaction->save();
 
+            // Dispatch an event to notify other parts of the system about the new referred transaction.
             TransactionMade::dispatch($referredTransaction);
         }
     }
 
+    /**
+     * Calculate earnings for a referral based on the transaction amount.
+     *
+     * @param Referral $referral The referral object.
+     * @param float $transactionAmount The transaction amount.
+     * @return float The earnings for this referral.
+     */
     protected function calculateEarningsForReferral(Referral $referral, $transactionAmount)
     {
+        // Get the affiliate associated with this referral
         $affiliate = $referral->affiliate;
+
+        // Get the commission rate for this affiliate
         $commissionRate = $affiliate->commissionRate();
 
         // Earnings are calculated as a percentage of the transaction amount

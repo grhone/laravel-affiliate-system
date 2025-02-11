@@ -51,7 +51,6 @@ class Referral extends Model
         return $this->belongsTo(AffiliateClick::class);
     }
 
-
     /**
      * Referred user relationship.
      *

@@ -44,5 +44,4 @@ class AffiliateSetting extends Model
         return $this->belongsTo(Affiliate::class, 'affiliate_id');
     }
 
-    // You can add additional methods or business logic specific to the affiliate settings here.
 }

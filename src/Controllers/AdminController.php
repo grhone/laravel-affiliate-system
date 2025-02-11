@@ -10,7 +10,6 @@ use Grhone\LaravelAffiliateSystem\Events\AffiliateApproved;
 class AdminController extends Controller
 {
 
-
     /**
      * Display the admin dashboard with overall program stats.
      *
@@ -35,6 +34,52 @@ class AdminController extends Controller
         }
 
         return view('laravel-affiliate-system::admin.affiliates.dashboard', compact('totalAffiliates', 'totalApprovedAffiliates', 'pendingAffiliates', 'totalUnpaidEarnings'));
+    }
+
+    /**
+     * Generate a report for the admin dashboard.
+     * 
+     * @param Request $request
+     * @return \Illuminate\Http\Response
+     */
+    public function generateReport(Request $request)
+    {
+        $request->validate([
+            'start_date' => 'nullable|date',
+            'end_date' => 'nullable|date|after_or_equal:start_date',
+            'type' => 'nullable|in:sale,refund,chargeback',
+            'group_by' => 'nullable|in:day,week,month'
+        ]);
+        
+        $query = ReferredTransaction::query()
+            ->with('affiliate')
+            ->when($request->affiliate_id, fn($q) => $q->where('affiliate_id', $request->affiliate_id))
+            ->when($request->type, fn($q) => $q->where('type', $request->type))
+            ->when($request->start_date, fn($q) => $q->whereDate('created_at', '>=', $request->start_date))
+            ->when($request->end_date, fn($q) => $q->whereDate('created_at', '<=', $request->end_date));
+
+        $groupBy = $request->group_by ?? 'day';
+        
+        $reportData = $query->selectRaw(
+            match($groupBy) {
+                'week' => "DATE_FORMAT(created_at, '%v/%x') as period",
+                'month' => "DATE_FORMAT(created_at, '%Y-%m') as period",
+                default => "DATE(created_at) as period"
+            },
+            $request->affiliate_id ? '' : 'affiliate_id', // Only group by affiliate if not filtered
+            DB::raw('COUNT(*) as count'),
+            DB::raw('SUM(purchase_amount) as sales'),
+            DB::raw('SUM(earnings) as earnings')
+        )
+        ->when(!$request->affiliate_id, fn($q) => $q->groupBy('affiliate_id', 'period'))
+        ->when($request->affiliate_id, fn($q) => $q->groupBy('period'))
+        ->get();
+
+        return view('laravel-affiliate-system::admin.affiliates.reports', [
+            'reportData' => $reportData,
+            'affiliates' => Affiliate::all(),
+            'filters' => $request->all()
+        ]);
     }
 
     /**
@@ -130,7 +175,6 @@ class AdminController extends Controller
         return view('laravel-affiliate-system::admin.affiliates.show', compact('affiliate', 'referrals', 'clicks', 'transactions'));
     }
 
-
     /**
      * Show the form for editing the specified affiliate.
      *
@@ -142,7 +186,6 @@ class AdminController extends Controller
         $affiliate = Affiliate::findOrFail($id);
         return view('laravel-affiliate-system::admin.affiliates.edit', compact('affiliate'));
     }
-
 
     /**
      * Update the specified affiliate in storage.
@@ -181,7 +224,5 @@ class AdminController extends Controller
                             ->withErrors('Failed to delete the affiliate.');
         }
     }
-
-
 
 }

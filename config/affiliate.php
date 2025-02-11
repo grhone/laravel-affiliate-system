@@ -8,6 +8,13 @@ return [
         'payment' => [], // Any additional middleware in addition to the admin middleware. Only needed if you have some specific admin role that will need to process payments.    
     ],
 
+    /**
+     * Admin email address setting
+     */
+    'email' => [
+        'admin' => env('AFFILIATE_ADMIN_EMAIL', null),
+    ],
+
     /*
      * Affiliate referral code settings
      */

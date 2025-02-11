@@ -46,10 +46,6 @@ class PaymentService
                 $payment->payout_status = $result['details']['batch_header']['batch_status'];
                 $payment->save();
 
-                // Additional logic like updating affiliate's balance, sending notifications, etc.
-
-
-
                 return $payment;
             } else {
                 // Handle failure in PayPal payout
@@ -61,6 +57,13 @@ class PaymentService
         return null;
     }
 
+    /**
+     * Update payment status based on event data from PayPal.
+     *
+     * @param array $eventData Event data from PayPal webhook.
+     * @param string $status New status to update in the database.
+     * @return void
+     */
     public function updatePaymentStatus($eventData, $status)
     {
         $transactionId = $eventData['batch_header']['payout_batch_id'];
@@ -71,8 +74,8 @@ class PaymentService
             $payment->save();
         }
 
+        // Dispatch event for payment status updated
         UpdatedPaymentStatus::dispatch($payment);
-        //Mail::to($payment->affiliate->user->email)->send(new PaymentStatusMail($payment->affiliate->user, $payoutAmount, $status));
 
     }
 
@@ -88,7 +91,6 @@ class PaymentService
 
         return $totalEarnings;
     }
-
 
     /**
      * Process payments for all affiliates.
