@@ -1,8 +1,8 @@
-# Grhone's Laravel Affiliate System
+# Laravel Affiliate System
 
 ## Overview
 
-Grhone's Laravel Affiliate System is a robust, easy-to-use affiliate management package for Laravel applications. It provides functionalities for managing affiliate registrations, tracking referrals, calculating commissions, and handling affiliate payments. This package is ideal for businesses looking to integrate an affiliate marketing system into their Laravel-based web applications.
+Laravel Affiliate System is a robust, easy-to-use affiliate management package for Laravel applications. It provides functionalities for managing affiliate registrations, tracking referrals, calculating commissions, and handling affiliate payments. This package is ideal for businesses looking to integrate an affiliate marketing system into their Laravel-based web applications.
 
 ## Requirements
 
